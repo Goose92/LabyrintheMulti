@@ -103,12 +103,24 @@ class Partie:
         except select.error:
             pass
         laCarte=""
-        for elt in self.grille :
+        copieGrille=self.grille
+        for elt in self.lesJoueurs :
+            laLigneAModifier=copieGrille[self.lesJoueurs[elt][3][0]]
+            print("###" + laLigneAModifier)
+            print("++++" + str(self.lesJoueurs[elt][3][1]))
+
+
+            laLigne=laLigneAModifier[:self.lesJoueurs[elt][3][1]] + "$" + laLigneAModifier[self.lesJoueurs[elt][3][1]+1:]
+            print(">>>>>" + laLigne)
+
+            copieGrille[self.lesJoueurs[elt][3][0]]=laLigne
+            print(laLigne)
+
+        for elt in copieGrille :
             laCarte=laCarte + elt + "\n"
         # On enlève le dernier retour à la ligne inutile
         laCarte=laCarte[0:int(len(laCarte))-1]
         for client in connection:
-            #chaineAEnvoyer="Voici la carte après coup " + str(nbCoups)
             client.send(laCarte.encode())
 
     def nbJoueurs(self):
@@ -196,6 +208,19 @@ class Partie:
         else :
             return False
 
+    def placeLibre(self,ligne,colonne) :
+        # On regarde si on sort du cadre
+        if ligne>self.tailleGrille[0] or ligne<0 :
+            return False
+        if colonne>self.tailleGrille[1] or colonne<0 :
+            return False
+        # Puis on regarde si la case est "disponible"
+        ch=self.grille[int(ligne)]
+
+        if ch[colonne]==" " or ch[colonne]=="." :
+            return True
+        else :
+            return False
 
     def chargerSauvegarde(self) :
         chemin = os.path.join("sauvegardes", "sauvegardes.txt")
@@ -248,7 +273,7 @@ class Partie:
             while ok==False:
                 ligneInit=randint(0,self.tailleGrille[0])
                 colonneInit=randint(0,self.tailleGrille[1])
-                if self.coupValide(ligneInit,colonneInit) and self.presenceRobot(ligneInit,colonneInit)==False :
+                if self.placeLibre(ligneInit,colonneInit) and self.presenceRobot(ligneInit,colonneInit)==False :
                     self.lesJoueurs[elt][3][0]=ligneInit
                     self.lesJoueurs[elt][3][1]=colonneInit
                     ok=True
