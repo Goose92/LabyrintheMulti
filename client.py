@@ -54,7 +54,7 @@ while msg_a_envoyer != b"fin":
                 if message[:5]=="[MSG]" :
                     print(message[5:])
                 else :
-                    print("La carte ....." + message)
+                    print(message)
 
 print("Fermeture de la connexion")
 connexion_avec_serveur.close()

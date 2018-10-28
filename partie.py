@@ -107,9 +107,14 @@ class Partie:
             clients_a_lire, wlist, xlist = select.select(connection,[], [], 0.05)
         except select.error:
             pass
+        laCarte=""
+        for elt in self.grille :
+            laCarte=laCarte + elt + "\n"
+        # On enlève le dernier retour à la ligne inutile
+        laCarte=laCarte[0:int(len(laCarte))-1]
         for client in connection:
-            chaineAEnvoyer="Voici la carte après coup " + str(nbCoups)
-            client.send(b"la carte !!!!!!")
+            #chaineAEnvoyer="Voici la carte après coup " + str(nbCoups)
+            client.send(laCarte.encode())
 
     def nbJoueurs(self):
         return len(self.lesJoueurs)

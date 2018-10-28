@@ -29,9 +29,9 @@ connexion_principale=lancementServeur(hote,port)   # Lancement du serveur
 # Le serveur se met en écoute de nouvelles connexions jusqu'à atteindre le nombre attendu
 clients_connectes=lePlateau.enAttenteConnexionJoueurs(int(nbJoueurs),connexion_principale)
 
-#lePlateau.listerCartes()
-#lePlateau.choisirCartePartie()
-#lePlateau.partie.afficherCartePartie()
+lePlateau.listerCartes()
+lePlateau.choisirCartePartie()
+lePlateau.partie.afficherCartePartie()
 
 # Les joueurs doivent se présenter (donner leur nom)
 lePlateau.presentationDesJoueurs(nbJoueurs,clients_connectes)
