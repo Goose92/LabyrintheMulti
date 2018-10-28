@@ -32,10 +32,15 @@ clients_connectes=lePlateau.enAttenteConnexionJoueurs(int(nbJoueurs),connexion_p
 lePlateau.listerCartes()
 lePlateau.choisirCartePartie()
 lePlateau.partie.afficherCartePartie()
+lePlateau.partie.initialiserTailleMaxGrille()
+print("Taille de la grille : " + str(lePlateau.partie.tailleGrille[0]) + " par " +  str(lePlateau.partie.tailleGrille[1]))
 
 # Les joueurs doivent se présenter (donner leur nom)
 lePlateau.presentationDesJoueurs(nbJoueurs,clients_connectes)
 lePlateau.partie.toutLeMondePassif(clients_connectes)
+lePlateau.partie.initialisationPositionJoueurs()
+print("La position des joueurs a été initialisée")
+
 time.sleep(1)
 lePlateau.partie.afficherCarteATous(clients_connectes,nbCoups)
 #lePlateau.partie.afficherListeJoueurs()
@@ -52,6 +57,7 @@ lePlateau.partie.donnerLaMain(joueurActuel,clients_connectes)
 lePlateau.partie.messageAuxPassifs(joueurActuel,clients_connectes,"[MSG]" + "C'est à " + lePlateau.partie.nomJoueur(joueurActuel) + " de jouer")
 #time.sleep(1)
 
+lePlateau.partie.afficherPositionDesRobots()
 
 print("Début de la partie\n")
 while serveur_lance:

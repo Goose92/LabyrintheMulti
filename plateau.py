@@ -182,12 +182,8 @@ class Plateau:
                     # Peut planter si le message contient des caractères spéciaux
                     msg_recu = msg_recu.decode()
                     clientID=client.getpeername()[1]
-
-                    #print(self.partie.nomJoueur(clientID) + " (" + str(clientID) + ") : " + str(msg_recu) )
-                    #client.send(b"Votre message a ete recu par le serveur")
                     if str(msg_recu[:5])=="[NOM]" :
                         self.partie.mettreAJourNomJoueur(int(client.getpeername()[1]),str(msg_recu[5:]))
-                        #self.partie.afficherListeJoueurs()
                         nomsOk=nomsOk+1
                         print("Le joueur " + str(msg_recu[5:]) + " s'est présenté")
 
@@ -206,7 +202,7 @@ class Plateau:
 
                 print("Un nouveau joueur s'est connecté (" + str(infos_connexion[1]) + ")")
                 # On crée le nouveau joueur sur le plateau
-                self.partie.ajouterUnJoueur(str(infos_connexion[1]),"",connexion_avec_client)
+                self.partie.ajouterUnJoueur(str(infos_connexion[1]),"vide",connexion_avec_client)
                 nbJoueursConnectes=nbJoueursConnectes+1
                 print(str(nbJoueursConnectes) + " joueur(s) connecté(s) sur les " + str(nbJoueurs) + " attendu(s)")
         print("Les joueurs sont tous là !")

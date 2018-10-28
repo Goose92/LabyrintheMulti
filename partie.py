@@ -5,6 +5,7 @@
 # La classe contient également plusieurs méthodes pour agir sur l'objet Partie
 
 import os,socket,select,time
+from random import randint
 
 class Partie:
 
@@ -29,15 +30,12 @@ class Partie:
             indice=indice+1
         return "bizarre"
 
-    #def nomJoueur(self,ID) :
-    #    return self.lesJoueurs[ID][0]
-
     def afficherCartePartie(self) :
         for elt in self.grille :
             print(elt)
 
     def ajouterUnJoueur(self,ID,nom,connection) :
-        leJoueur=[nom,connection,False]
+        leJoueur=[nom,connection,False,[0,0]]
         self.lesJoueurs[int(ID)]=leJoueur
 
     def supprimerUnJoueur(self,ID) :
@@ -56,9 +54,6 @@ class Partie:
         for elt in self.lesJoueurs :
             nouvelleLigne=[self.lesJoueurs[elt][0],self.lesJoueurs[elt][2]]
             self.listeJoueurs.append(nouvelleLigne)
-        #return liste
-        #for elt in self.listeJoueurs :
-        #    print(str(elt[0]) + " " + str(elt[1]))
 
     def donnerLaMain(self,joueurProchain,connection) :
         for elt in self.listeJoueurs :
@@ -179,6 +174,13 @@ class Partie:
         self.grille=nouvelleGrille
         self.robot=[ligne,colonne]
 
+    def presenceRobot(self,ligne,colonne) :
+
+        for elt in self.lesJoueurs :
+            print(str(ligne) +"/"+str(colonne) + " " + str(self.lesJoueurs[elt][3]))
+            if self.lesJoueurs[elt][3][0]==ligne and self.lesJoueurs[elt][3][1]==colonne :
+                return True
+        return False
 
     def coupValide(self,ligne,colonne) :
         # On regarde si on sort du cadre
@@ -238,3 +240,20 @@ class Partie:
     def afficherPartie(self):
         for ligne in self.grille :
             print(ligne)
+
+    def initialisationPositionJoueurs(self) :
+        print("On initialise les positions")
+        for elt in self.lesJoueurs :
+            ok=False
+            while ok==False:
+                ligneInit=randint(0,self.tailleGrille[0])
+                colonneInit=randint(0,self.tailleGrille[1])
+                if self.coupValide(ligneInit,colonneInit) and self.presenceRobot(ligneInit,colonneInit)==False :
+                    self.lesJoueurs[elt][3][0]=ligneInit
+                    self.lesJoueurs[elt][3][1]=colonneInit
+                    ok=True
+            print("Position initiale trouvée : " + str(ligneInit) + " " + str(colonneInit))
+
+    def afficherPositionDesRobots(self) :
+        for elt in self.lesJoueurs :
+            print("Joueur " + str(self.lesJoueurs[elt][0]) + " en " + str(self.lesJoueurs[elt][3][0])+ "/" + str(self.lesJoueurs[elt][3][1]))
