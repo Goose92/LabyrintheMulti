@@ -2,7 +2,7 @@
 
 
 import socket,string
-from gestion import flush_input
+from gestion import flush_input,choixValide
 
 hote = "localhost"
 port = 12800
@@ -24,8 +24,23 @@ print("En attente des autres joueurs")
 while msg_a_envoyer != b"fin":
     if EtatCommunication=="ACTIF" :
         #print("Je suis en ACTIF, je peux donc envoyer")
-        flush_input() # je vide le cache
-        msg_a_envoyer = input(nomJoueur + " ("+ str(numID) + ") : ")
+
+        ordreOk=False
+        while ordreOk==False :
+            flush_input() # je vide le cache
+            msg_a_envoyer = input(nomJoueur + " ("+ str(numID) + "), at your command (? pour help) : ")
+            if msg_a_envoyer=="?" :
+                print("utilisez les cardinaux et un nombre")
+            else :
+                if msg_a_envoyer=="fin" :
+                    ordreOk=True
+                else :
+                    if choixValide(msg_a_envoyer) :
+                        print("commande valide")
+                        ordreOk=True
+                    else :
+                        print("Format incorrect, utilisez .....")
+
         msg_a_envoyer = msg_a_envoyer.encode()
         # Peut planter si vous tapez des caractères spéciaux
         try :

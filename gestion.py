@@ -74,7 +74,7 @@ def choixValide(direction) :
                 try :
                     int(nbCoupsDirection)
                 except ValueError:
-                    print("Lorsque vous souhaitez des coups multiples, il faut saisir une valeur numérique après la direction")
+                    #print("Lorsque vous souhaitez des coups multiples, il faut saisir une valeur numérique après la direction")
                     return False
             return True
         else :
