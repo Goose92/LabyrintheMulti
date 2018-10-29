@@ -21,6 +21,8 @@ mur="O"
 porteOuverte="."
 porteFermee="-"
 sortie="U"
+print("Il faut gérer les fin de vie pour les tilisateurs")
+
 
 nbJoueurs=nbJoueursAttendu() # On regarde dans paramètres le nombre de joueurs attendus, on sort si problème
 
@@ -32,12 +34,12 @@ print("Plateau créé, en attente de connexions de " + str(nbJoueurs) + " joueur
 connexion_principale=lancementServeur(hote,port)   # Lancement du serveur
 
 # Le serveur se met en écoute de nouvelles connexions jusqu'à atteindre le nombre attendu
-clients_connectes=lePlateau.enAttenteConnexionJoueurs(int(nbJoueurs),connexion_principale)
+clients_connectes=lePlateau.enAttenteConnexionJoueurs(int(nbJoueurs),connexion_principale,NbPtsDeVieInit)
 
 lePlateau.listerCartes()
 lePlateau.choisirCartePartie()
 lePlateau.partie.initialiserTailleMaxGrille()
-#print("Taille de la grille : " + str(lePlateau.partie.tailleGrille[0]) + " par " +  str(lePlateau.partie.tailleGrille[1]))
+print("Taille de la grille : " + str(lePlateau.partie.tailleGrille[0]) + " par " +  str(lePlateau.partie.tailleGrille[1]))
 
 # Les joueurs doivent se présenter (donner leur nom)
 lePlateau.presentationDesJoueurs(nbJoueurs,clients_connectes)
@@ -60,7 +62,7 @@ joueurActuel=0
 
 # On donne la main au premier joueur (on peut le faire via un random pour le premier)
 lePlateau.partie.donnerLaMain(joueurActuel,clients_connectes)
-lePlateau.partie.messageAuxPassifs(joueurActuel,clients_connectes,"[MSG]" + "C'est à " + lePlateau.partie.nomJoueur(joueurActuel) + " de jouer")
+lePlateau.partie.messageAuxPassifs(joueurActuel,clients_connectes,"[MSG]" + "C'est à " + str(lePlateau.partie.nomJoueur(joueurActuel)) + " de jouer")
 
 lePlateau.partie.afficherPositionDesRobots()
 print(lePlateau.partie.carteAvecRobot())
@@ -101,12 +103,15 @@ while serveur_lance:
                         sens=sensJoue(msg_recu)
                         for i in range(0,int(nbCoups)) :
                             lePlateau.partie.jouerUnCoup(clientID,sens)
+                        lePlateau.partie.messageNbVies(joueurActuel,clients_connectes)
+
                     if retour == 2 :
                         lePlateau.partie.creerMur(clientID,msg_recu[1])
                         nbCoups=0
                     if retour == 3 :
                         lePlateau.partie.supprimerMur(clientID,msg_recu[1])
                         nbCoups=0
+                    print(str(lePlateau.partie.nomJoueur(joueurActuel)) + "a joué " + str(msg_recu) + " (il lui reste " + str(lePlateau.partie.nbPtsJoueur(joueurActuel)) + " points)")
 
 
                     #lePlateau.partie.afficherCartePartie()

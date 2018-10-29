@@ -163,7 +163,7 @@ class Plateau:
                         nomsOk=nomsOk+1
                         print("Le joueur " + str(msg_recu[5:]) + " s'est présenté")
 
-    def enAttenteConnexionJoueurs(self,nbJoueurs,connexion_principale) :
+    def enAttenteConnexionJoueurs(self,nbJoueurs,connexion_principale,NbPtsDeVieInit) :
         nbJoueursConnectes=0
         clients_connectes=[]
         while nbJoueursConnectes!= int(nbJoueurs):
@@ -178,7 +178,7 @@ class Plateau:
 
                 print("Un nouveau joueur s'est connecté (" + str(infos_connexion[1]) + ")")
                 # On crée le nouveau joueur sur le plateau
-                self.partie.ajouterUnJoueur(str(infos_connexion[1]),"vide",connexion_avec_client,str(nbJoueursConnectes+1))
+                self.partie.ajouterUnJoueur(str(infos_connexion[1]),"vide",connexion_avec_client,str(nbJoueursConnectes+1),NbPtsDeVieInit)
                 nbJoueursConnectes=nbJoueursConnectes+1
                 print(str(nbJoueursConnectes) + " joueur(s) connecté(s) sur les " + str(nbJoueurs) + " attendu(s)")
         print("Les joueurs sont tous là !")

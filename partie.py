@@ -19,6 +19,7 @@ class Partie:
             # Champ 2 : ??????????????
             # Champ 3 : Le robot (ligne, colonne)
             # Champ 4 : Le caractère pour afficher le robot du joueur (1 à 9)
+            # Champ 5 : le nb de points de vie
 
         self.lesJoueurs=dict() # un dictionnaire avec nom, puis connection, puis tour (si true c'est à son tour)
         self.nbCoups=0
@@ -32,8 +33,16 @@ class Partie:
         indice=0
         for elt in self.lesJoueurs :
             if indice==num :
-                return self.lesJoueurs[elt][0]
+                return str(self.lesJoueurs[elt][0])
             indice=indice+1
+
+    def nbPtsJoueur(self,num) :
+          indice=0
+          for elt in self.lesJoueurs :
+              if indice==num :
+                  return self.lesJoueurs[elt][5]
+              indice=indice+1
+
 
     def afficherChampsjoueur(self) :
         for elt in self.lesJoueurs :
@@ -47,8 +56,8 @@ class Partie:
         for elt in self.grille :
             print(elt)
 
-    def ajouterUnJoueur(self,ID,nom,connection,caractere) :
-        leJoueur=[nom,connection,False,[0,0],caractere]
+    def ajouterUnJoueur(self,ID,nom,connection,caractere,PtsDeVieInit) :
+        leJoueur=[nom,connection,False,[0,0],caractere,PtsDeVieInit]
         self.lesJoueurs[int(ID)]=leJoueur
 
     def supprimerUnJoueur(self,ID) :
@@ -110,6 +119,22 @@ class Partie:
                 client.send(messageAEnvoyer.encode())
         num=num+1
 
+    def messageNbVies(self,joueurActif,connection) :
+        clients_a_lire = []
+        messageAEnvoyer="[VIE]" + str(self.nbPtsJoueur(joueurActif))
+        try:
+            clients_a_lire, wlist, xlist = select.select(connection,[], [], 0.05)
+        except select.error:
+            pass
+        num=0
+        #print("=====" + str(joueurActif))
+        for client in connection:
+           # print(client)
+            if num==int(joueurActif) :
+                client.send(messageAEnvoyer.encode())
+            num=num+1
+            print("nb vies")
+
     def annoncerNumeroAuxJoueurs(self,connection) :
         clients_a_lire = []
         try:
@@ -170,61 +195,6 @@ class Partie:
         ancienJoueur[0]=nom
         self.lesJoueurs[ID]=ancienJoueur
 
-    def effacerRobot(self,ligne,colonne) :
-        CptLigne=0
-        nouvelleLigne=""
-        nouvelleGrille=[]
-        for elt in self.grille:
-            if CptLigne==ligne :
-                for i in range(len(elt)):
-                    if elt[i]=="X" :
-                        # On avait un X majuscule, donc pas de porte
-                        nouvelleLigne=nouvelleLigne + " "
-                    else :
-                        if elt[i]=="x" :
-                            # on avait un petit x, on etait donc sur une porte, on l'affiche pour restaurer l'état initial
-                            nouvelleLigne=nouvelleLigne + "."
-                        else :
-                            nouvelleLigne=nouvelleLigne + elt[i]
-
-                nouvelleGrille.append(nouvelleLigne)
-            else :
-                nouvelleGrille.append(elt)
-            CptLigne=CptLigne+1
-        self.grille=nouvelleGrille
-
-
-    def positionnerRobot(self,ligne,colonne) :
-        CptLigne=0
-        sortie=False
-        numColonne=0
-        nouvelleLigne=""
-        nouvelleGrille=[]
-        for elt in self.grille:
-            if CptLigne==ligne :
-                for i in range(len(elt)):
-                    if numColonne==colonne :
-                        if elt[i]=="U" :
-                            self.gagne=True
-                            nouvelleLigne=nouvelleLigne + "$"
-                        else :
-                            if elt[i]=="." :
-                                # On est sur une porte, on indique un petit x pour conserver cette information
-                                nouvelleLigne=nouvelleLigne + "x"
-                            else :
-                                # On n'est pas sur une porte, on peut afficher un X classique
-                                nouvelleLigne=nouvelleLigne + "X"
-                    else :
-                        nouvelleLigne=nouvelleLigne + elt[i]
-                    numColonne=numColonne+1
-
-                nouvelleGrille.append(nouvelleLigne)
-            else :
-                nouvelleGrille.append(elt)
-            CptLigne=CptLigne+1
-        self.grille=nouvelleGrille
-        self.robot=[ligne,colonne]
-
     def presenceRobot(self,ligne,colonne) :
         for elt in self.lesJoueurs :
             if self.lesJoueurs[elt][3][0]==ligne and self.lesJoueurs[elt][3][1]==colonne :
@@ -237,8 +207,6 @@ class Partie:
             return False
         if colonne>self.tailleGrille[1] or colonne<0 :
             return False
-
-        # On regarde si il y a déjà un robot sur le case
 
         # Puis on regarde si la case est "disponible"
         ch=self.grille[int(ligne)]
@@ -325,7 +293,7 @@ class Partie:
                     if self.coupValide(ligneRobot-1,colonneRobot)==True and self.presenceRobot(ligneRobot-1,colonneRobot)==False :
                         self.lesJoueurs[elt][3][0]=self.lesJoueurs[elt][3][0]-1
                     else :
-                        self.pointDeVie=self.pointDeVie-1
+                        self.lesJoueurs[elt][5]=self.lesJoueurs[elt][5]-1
                     return 1
 
                 if sens=="S" :
@@ -333,7 +301,7 @@ class Partie:
                     if self.coupValide(ligneRobot+1,colonneRobot)==True and self.presenceRobot(ligneRobot+1,colonneRobot)==False :
                         self.lesJoueurs[elt][3][0]=self.lesJoueurs[elt][3][0]+1
                     else :
-                        self.pointDeVie=self.pointDeVie-1
+                        self.lesJoueurs[elt][5]=self.lesJoueurs[elt][5]-1
                     return 1
 
                 if sens=="E" :
@@ -341,7 +309,7 @@ class Partie:
                     if self.coupValide(ligneRobot,colonneRobot+1)==True and self.presenceRobot(ligneRobot,colonneRobot+1)==False :
                         self.lesJoueurs[elt][3][1]=self.lesJoueurs[elt][3][1]+1
                     else :
-                        self.pointDeVie=self.pointDeVie-1
+                        self.lesJoueurs[elt][5]=self.lesJoueurs[elt][5]-1
                     return 1
 
                 if sens=="O" :
@@ -349,7 +317,7 @@ class Partie:
                     if self.coupValide(ligneRobot,colonneRobot-1)==True and self.presenceRobot(ligneRobot,colonneRobot-1)==False :
                         self.lesJoueurs[elt][3][1]=self.lesJoueurs[elt][3][1]-1
                     else :
-                        self.pointDeVie=self.pointDeVie-1
+                        self.lesJoueurs[elt][5]=self.lesJoueurs[elt][5]-1
                     return 1
         return -1
 

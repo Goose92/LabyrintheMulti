@@ -6,6 +6,7 @@ from gestion import flush_input,choixValide
 
 hote = "localhost"
 port = 12800
+nbVie=1000
 
 connexion_avec_serveur = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
@@ -83,7 +84,12 @@ while msg_a_envoyer != b"fin" and partieTerminee==False :
                             numJoueur=message[9:]
                             print("Vous êtes le robot numero " + message[9:])
                         else :
-                            print(message)
+                            if message[:5]=="[VIE]" :
+                                numJoueur=message[5:]
+                                print("Vous avez x vies " + message[5:])
+                                nbVie=int(message[5:])
+                            else :
+                                print(message)
 
 print("Fermeture de la connexion")
 connexion_avec_serveur.close()
