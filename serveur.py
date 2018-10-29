@@ -46,10 +46,6 @@ lePlateau.partie.toutLeMondePassif(clients_connectes)
 lePlateau.partie.initialisationPositionJoueurs()
 print("La position des joueurs a été initialisée")
 
-#lePlateau.partie.afficherCartePartie()
-
-#time.sleep(0.1)
-
 lePlateau.partie.afficherCarteATous(clients_connectes,nbCoups)
 lePlateau.partie.initialiserToursjoueurs()
 
@@ -57,6 +53,7 @@ lePlateau.partie.afficherListeJoueurs()
 print("la liste des tours de joueurs a été initialisée")
 lePlateau.partie.messageAuxPassifs(-1,clients_connectes,"[MSG]" + "Tous les joueurs sont arrivés")
 
+lePlateau.partie.annoncerNumeroAuxJoueurs(clients_connectes)
 
 # Le serveur se met en dialogue avec les clients connectés
 joueurActuel=0

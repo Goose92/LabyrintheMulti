@@ -110,6 +110,19 @@ class Partie:
                 client.send(messageAEnvoyer.encode())
         num=num+1
 
+    def annoncerNumeroAuxJoueurs(self,connection) :
+        clients_a_lire = []
+        try:
+            clients_a_lire, wlist, xlist = select.select(connection,[], [], 0.05)
+        except select.error:
+            pass
+        num=1
+        for client in connection:
+            messageAEnvoyer="[DOSSARD]" + str(num)
+            client.send(messageAEnvoyer.encode())
+            num=num+1
+
+
     def messageATous(self,connection,messageAEnvoyer) :
         clients_a_lire = []
         try:

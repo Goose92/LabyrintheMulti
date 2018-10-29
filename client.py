@@ -27,6 +27,7 @@ EtatCommunication="PASSIF"
 ordreRecu=False
 print("En attente des autres joueurs")
 
+numJoueur="XXXXX"
 partieTerminee=False
 while msg_a_envoyer != b"fin" and partieTerminee==False :
     if EtatCommunication=="ACTIF" :
@@ -34,7 +35,7 @@ while msg_a_envoyer != b"fin" and partieTerminee==False :
         ordreOk=False
         while ordreOk==False :
             flush_input() # je vide le cache
-            msg_a_envoyer = input(nomJoueur + " ("+ str(numID) + "), at your command (? pour help) : ")
+            msg_a_envoyer = input(nomJoueur + " (Robot "+ str(numJoueur) + "), at your command (? pour help) : ")
             if msg_a_envoyer=="?" :
                 print("utilisez les cardinaux et un nombre")
             else :
@@ -74,11 +75,15 @@ while msg_a_envoyer != b"fin" and partieTerminee==False :
                 if message[:5]=="[MSG]" :
                     print(message[5:])
                 else :
-
                     if message[:7]=="[GAGNE]" :
                         partieTerminee=True
                         print(message[7:])
-                    print(message)
+                    else :
+                        if message[:9]=="[DOSSARD]" :
+                            numJoueur=message[9:]
+                            print("Vous êtes le robot numero " + message[9:])
+                        else :
+                            print(message)
 
 print("Fermeture de la connexion")
 connexion_avec_serveur.close()
