@@ -2,7 +2,7 @@ import socket
 import select, sys,time
 
 from joueur import Joueur
-from gestion import lancementServeur,joueurSuivant,nbJoueursAttendu
+from gestion import lancementServeur,joueurSuivant,nbJoueursAttendu,choixValide,nbCoupsJoue,sensJoue
 from carte import Carte
 from partie import Partie
 from plateau import Plateau
@@ -31,23 +31,27 @@ clients_connectes=lePlateau.enAttenteConnexionJoueurs(int(nbJoueurs),connexion_p
 
 lePlateau.listerCartes()
 lePlateau.choisirCartePartie()
-lePlateau.partie.afficherCartePartie()
 lePlateau.partie.initialiserTailleMaxGrille()
-print("Taille de la grille : " + str(lePlateau.partie.tailleGrille[0]) + " par " +  str(lePlateau.partie.tailleGrille[1]))
+#print("Taille de la grille : " + str(lePlateau.partie.tailleGrille[0]) + " par " +  str(lePlateau.partie.tailleGrille[1]))
 
 # Les joueurs doivent se présenter (donner leur nom)
 lePlateau.presentationDesJoueurs(nbJoueurs,clients_connectes)
 lePlateau.partie.toutLeMondePassif(clients_connectes)
+
 lePlateau.partie.initialisationPositionJoueurs()
 print("La position des joueurs a été initialisée")
 
+#lePlateau.partie.afficherCartePartie()
+
 time.sleep(1)
+
 lePlateau.partie.afficherCarteATous(clients_connectes,nbCoups)
-#lePlateau.partie.afficherListeJoueurs()
 lePlateau.partie.initialiserToursjoueurs()
+
 lePlateau.partie.afficherListeJoueurs()
 print("la liste des tours de joueurs a été initialisée")
 lePlateau.partie.messageAuxPassifs(-1,clients_connectes,"[MSG]" + "Tous les joueurs sont arrivés")
+
 
 # Le serveur se met en dialogue avec les clients connectés
 joueurActuel=0
@@ -55,11 +59,15 @@ joueurActuel=0
 # On donne la main au premier joueur (on peut le faire via un random pour le premier)
 lePlateau.partie.donnerLaMain(joueurActuel,clients_connectes)
 lePlateau.partie.messageAuxPassifs(joueurActuel,clients_connectes,"[MSG]" + "C'est à " + lePlateau.partie.nomJoueur(joueurActuel) + " de jouer")
-#time.sleep(1)
 
 lePlateau.partie.afficherPositionDesRobots()
+print(lePlateau.partie.carteAvecRobot())
+
+lePlateau.partie.afficherChampsjoueur()
 
 print("Début de la partie\n")
+
+
 while serveur_lance:
     clients_a_lire = []
     try:
@@ -87,13 +95,32 @@ while serveur_lance:
                 if msg_recu != "" :
                     # On peut prendre en compte le coup
                     print("On peut jouer le coup - " + str(lePlateau.partie.nomJoueur(joueurActuel)) + " (" + str(clientID) + ") : " + str(msg_recu) )
+                    retour=choixValide(msg_recu)
+                    if retour == True :
+                        nbCoups=nbCoupsJoue(msg_recu)
+                        sens=sensJoue(msg_recu)
+                    #print("On va aller au " + str(sens) + " " + str(nbCoups) + " fois")
+
+                    for i in range(0,int(nbCoups)) :
+                        lePlateau.jouerUnCoup(clientID,sens)
+                    #lePlateau.partie.afficherCartePartie()
                     lePlateau.partie.messageAuxPassifs(joueurActuel,clients_connectes,"[MSG]" + str(lePlateau.partie.nomJoueur(joueurActuel)) + " a joué")
                     lePlateau.partie.toutLeMondePassif(clients_connectes)
-                    time.sleep(1)
+                    time.sleep(0.1)
+
                     lePlateau.partie.afficherCarteATous(clients_connectes,nbCoups)
-                    joueurActuel=joueurSuivant(joueurActuel,int(nbJoueurs))
-                    lePlateau.partie.donnerLaMain(joueurActuel,clients_connectes)
-                    lePlateau.partie.messageAuxPassifs(joueurActuel,clients_connectes,"[MSG]" + "C'est à " + lePlateau.partie.nomJoueur(joueurActuel) + " de jouer")
+                    if lePlateau.joueurGagne(clientID) == True :
+                        print("Gagné")
+                        lePlateau.partie.toutLeMondePassif(clients_connectes)
+                        lePlateau.partie.messageATous(clients_connectes,"[GAGNE]" + "Victoire du joueur " + lePlateau.partie.nomJoueur(joueurActuel))
+                    else :
+                        joueurActuel=joueurSuivant(joueurActuel,int(nbJoueurs))
+                        lePlateau.partie.donnerLaMain(joueurActuel,clients_connectes)
+                        lePlateau.partie.messageAuxPassifs(joueurActuel,clients_connectes,"[MSG]" + "C'est à " + lePlateau.partie.nomJoueur(joueurActuel) + " de jouer")
+
+                    print(lePlateau.partie.carteAvecRobot())
+
+
 
             #print("Nombre de joueurs = " + str(lePlateau.partie.nbJoueurs()))
 

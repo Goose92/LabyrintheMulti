@@ -25,6 +25,9 @@ def nbJoueursAttendu() :
         exit(0)
     if int(nbJoueurs)==0 :
         exit(0)
+    if int(nbJoueurs)>9 :
+        print("Pas plus de 9 joueurs") # Contrainte d'affichage pour le caractère du robot des joueurs (chiffres)
+        exit(0)
     return(nbJoueurs)
 
 def flush_input():

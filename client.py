@@ -36,7 +36,6 @@ while msg_a_envoyer != b"fin":
                     ordreOk=True
                 else :
                     if choixValide(msg_a_envoyer) :
-                        print("commande valide")
                         ordreOk=True
                     else :
                         print("Format incorrect, utilisez .....")
