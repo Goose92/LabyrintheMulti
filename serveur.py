@@ -103,9 +103,8 @@ while serveur_lance:
                         nbCoups=nbCoupsJoue(msg_recu)
                         sens=sensJoue(msg_recu)
                         for i in range(0,int(nbCoups)) :
-                            lePlateau.jouerUnCoup(clientID,sens)
+                            lePlateau.partie.jouerUnCoup(clientID,sens)
                     if retour == 2 :
-                        print("on fait le mur")
                         lePlateau.partie.creerMur(clientID,msg_recu[1])
                         nbCoups=0
                     if retour == 3 :

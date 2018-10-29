@@ -245,7 +245,6 @@ class Partie:
             return False
 
     def creerMur(self,clientID,sens) :
-        print("====>On va créer un mur")
         # On commence par trouver la position du robot
         for elt in self.lesJoueurs :
             if elt==clientID :
@@ -266,7 +265,6 @@ class Partie:
                     self.grille[int(ligneAMurer)]=ligneAModifier[:colonneAMurer] + "-" + ligneAModifier[colonneAMurer+1:]
 
     def supprimerMur(self,clientID,sens) :
-        print("====>On va supprimer un mur")
         # On commence par trouver la position du robot
         for elt in self.lesJoueurs :
             if elt==clientID :
@@ -300,6 +298,47 @@ class Partie:
             return True
         else :
             return False
+
+    def jouerUnCoup(self, joueur, sens) :
+        # On commence par trouver la position du robot
+        for elt in self.lesJoueurs :
+            if elt==joueur :
+                ligneRobot=self.lesJoueurs[elt][3][0]
+                colonneRobot=self.lesJoueurs[elt][3][1]
+
+                #print("Le robot actuellement est en " + str(ligneRobot) + " / " + str(colonneRobot))
+                if sens=="N" :
+                    # Test de la case cible pour voir si on peut y aller
+                    if self.coupValide(ligneRobot-1,colonneRobot)==True and self.presenceRobot(ligneRobot-1,colonneRobot)==False :
+                        self.lesJoueurs[elt][3][0]=self.lesJoueurs[elt][3][0]-1
+                    else :
+                        self.pointDeVie=self.pointDeVie-1
+                    return 1
+
+                if sens=="S" :
+                    # Test de la case cible pour voir si on peut y aller
+                    if self.coupValide(ligneRobot+1,colonneRobot)==True and self.presenceRobot(ligneRobot+1,colonneRobot)==False :
+                        self.lesJoueurs[elt][3][0]=self.lesJoueurs[elt][3][0]+1
+                    else :
+                        self.pointDeVie=self.pointDeVie-1
+                    return 1
+
+                if sens=="E" :
+                    # Test de la case cible pour voir si on peut y aller
+                    if self.coupValide(ligneRobot,colonneRobot+1)==True and self.presenceRobot(ligneRobot,colonneRobot+1)==False :
+                        self.lesJoueurs[elt][3][1]=self.lesJoueurs[elt][3][1]+1
+                    else :
+                        self.pointDeVie=self.pointDeVie-1
+                    return 1
+
+                if sens=="O" :
+                    # Test de la case cible pour voir si on peut y aller
+                    if self.coupValide(ligneRobot,colonneRobot-1)==True and self.presenceRobot(ligneRobot,colonneRobot-1)==False :
+                        self.lesJoueurs[elt][3][1]=self.lesJoueurs[elt][3][1]-1
+                    else :
+                        self.pointDeVie=self.pointDeVie-1
+                    return 1
+        return -1
 
     def placeLibre(self,ligne,colonne) :
         # On regarde si on sort du cadre

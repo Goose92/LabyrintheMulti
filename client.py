@@ -13,8 +13,8 @@ numID=connexion_avec_serveur.getsockname()[1]
 print("Vous êtes connectés avec le serveur labyrinthe sur le port " + str((port)) + " et votre ID est " + str(numID))
 
 nomJoueur=input("Votre nom : ")
-nomJoueur="[NOM]"+nomJoueur
-msg_a_envoyer = nomJoueur.encode()
+nomJoueurTmp="[NOM]"+nomJoueur
+msg_a_envoyer = nomJoueurTmp.encode()
 connexion_avec_serveur.send(msg_a_envoyer)
 
 EtatCommunication="PASSIF"
@@ -24,8 +24,7 @@ print("En attente des autres joueurs")
 partieTerminee=False
 while msg_a_envoyer != b"fin" and partieTerminee==False :
     if EtatCommunication=="ACTIF" :
-        #print("Je suis en ACTIF, je peux donc envoyer")
-
+        # Je suis en ACTIF, je peux donc envoyer
         ordreOk=False
         while ordreOk==False :
             flush_input() # je vide le cache
@@ -51,7 +50,7 @@ while msg_a_envoyer != b"fin" and partieTerminee==False :
         EtatCommunication="PASSIF"
 
     if EtatCommunication=="PASSIF" :
-        #print("Je suis en PASSIF , j'affiche tout ce que je reçois sans me poser de question")
+        # Je suis en PASSIF , j'affiche tout ce que je reçois sans me poser de question
         try :
             msg_recu = connexion_avec_serveur.recv(1024)
         except :
@@ -69,9 +68,11 @@ while msg_a_envoyer != b"fin" and partieTerminee==False :
                 if message[:5]=="[MSG]" :
                     print(message[5:])
                 else :
-                    print(message)
+
                     if message[:7]=="[GAGNE]" :
                         partieTerminee=True
+                        print(message[7:])
+                    print(message)
 
 print("Fermeture de la connexion")
 connexion_avec_serveur.close()

@@ -111,47 +111,6 @@ class Plateau:
             i=i+1
         return i
 
-    def jouerUnCoup(self, joueur, sens) :
-        # On commence par trouver la position du robot
-        for elt in self.partie.lesJoueurs :
-            if elt==joueur :
-                ligneRobot=self.partie.lesJoueurs[elt][3][0]
-                colonneRobot=self.partie.lesJoueurs[elt][3][1]
-
-                #print("Le robot actuellement est en " + str(ligneRobot) + " / " + str(colonneRobot))
-                if sens=="N" :
-                    # Test de la case cible pour voir si on peut y aller
-                    if self.partie.coupValide(ligneRobot-1,colonneRobot)==True and self.partie.presenceRobot(ligneRobot-1,colonneRobot)==False :
-                        self.partie.lesJoueurs[elt][3][0]=self.partie.lesJoueurs[elt][3][0]-1
-                    else :
-                        self.partie.pointDeVie=self.partie.pointDeVie-1
-                    return 1
-
-                if sens=="S" :
-                    # Test de la case cible pour voir si on peut y aller
-                    if self.partie.coupValide(ligneRobot+1,colonneRobot)==True and self.partie.presenceRobot(ligneRobot+1,colonneRobot)==False :
-                        self.partie.lesJoueurs[elt][3][0]=self.partie.lesJoueurs[elt][3][0]+1
-                    else :
-                        self.partie.pointDeVie=self.partie.pointDeVie-1
-                    return 1
-
-                if sens=="E" :
-                    # Test de la case cible pour voir si on peut y aller
-                    if self.partie.coupValide(ligneRobot,colonneRobot+1)==True and self.partie.presenceRobot(ligneRobot,colonneRobot+1)==False :
-                        self.partie.lesJoueurs[elt][3][1]=self.partie.lesJoueurs[elt][3][1]+1
-                    else :
-                        self.partie.pointDeVie=self.partie.pointDeVie-1
-                    return 1
-
-                if sens=="O" :
-                    # Test de la case cible pour voir si on peut y aller
-                    if self.partie.coupValide(ligneRobot,colonneRobot-1)==True and self.partie.presenceRobot(ligneRobot,colonneRobot-1)==False :
-                        self.partie.lesJoueurs[elt][3][1]=self.partie.lesJoueurs[elt][3][1]-1
-                    else :
-                        self.partie.pointDeVie=self.partie.pointDeVie-1
-                    return 1
-        return -1
-
     def joueurGagne(self, joueur) :
         # On commence par trouver la position du robot
         for elt in self.partie.lesJoueurs :
