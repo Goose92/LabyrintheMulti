@@ -17,6 +17,11 @@ clients_connectes = []
 clients_a_lire = []
 nbCoups=1
 
+mur="O"
+porteOuverte="."
+porteFermee="-"
+sortie="U"
+
 nbJoueurs=nbJoueursAttendu() # On regarde dans paramètres le nombre de joueurs attendus, on sort si problème
 
 # Création du plateau de jeu
@@ -94,13 +99,20 @@ while serveur_lance:
                     # On peut prendre en compte le coup
                     print("On peut jouer le coup - " + str(lePlateau.partie.nomJoueur(joueurActuel)) + " (" + str(clientID) + ") : " + str(msg_recu) )
                     retour=choixValide(msg_recu)
-                    if retour == True :
+                    if retour == 1 :
                         nbCoups=nbCoupsJoue(msg_recu)
                         sens=sensJoue(msg_recu)
-                    #print("On va aller au " + str(sens) + " " + str(nbCoups) + " fois")
+                        for i in range(0,int(nbCoups)) :
+                            lePlateau.jouerUnCoup(clientID,sens)
+                    if retour == 2 :
+                        print("on fait le mur")
+                        lePlateau.partie.creerMur(clientID,msg_recu[1])
+                        nbCoups=0
+                    if retour == 3 :
+                        lePlateau.partie.supprimerMur(clientID,msg_recu[1])
+                        nbCoups=0
 
-                    for i in range(0,int(nbCoups)) :
-                        lePlateau.jouerUnCoup(clientID,sens)
+
                     #lePlateau.partie.afficherCartePartie()
                     lePlateau.partie.messageAuxPassifs(joueurActuel,clients_connectes,"[MSG]" + str(lePlateau.partie.nomJoueur(joueurActuel)) + " a joué")
                     lePlateau.partie.toutLeMondePassif(clients_connectes)
@@ -108,7 +120,6 @@ while serveur_lance:
 
                     lePlateau.partie.afficherCarteATous(clients_connectes,nbCoups)
                     if lePlateau.joueurGagne(clientID) == True :
-                        print("Gagné")
                         lePlateau.partie.toutLeMondePassif(clients_connectes)
                         lePlateau.partie.messageATous(clients_connectes,"[GAGNE]" + "Victoire du joueur " + lePlateau.partie.nomJoueur(joueurActuel))
                         print(lePlateau.partie.carteAvecRobot())

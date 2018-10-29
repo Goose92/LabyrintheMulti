@@ -244,6 +244,63 @@ class Partie:
         else :
             return False
 
+    def creerMur(self,clientID,sens) :
+        print("====>On va créer un mur")
+        # On commence par trouver la position du robot
+        for elt in self.lesJoueurs :
+            if elt==clientID :
+                ligneRobot=self.lesJoueurs[elt][3][0]
+                colonneRobot=self.lesJoueurs[elt][3][1]
+                ligneAMurer=ligneRobot
+                colonneAMurer=colonneRobot
+                if sens=="N" :
+                    ligneAMurer=ligneAMurer-1
+                if sens=="S" :
+                    ligneAMurer=ligneAMurer+1
+                if sens=="E" :
+                    colonneAMurer=colonneAMurer+1
+                if sens=="O" :
+                    colonneAMurer=colonneAMurer-1
+                if self.estUnePorte(ligneAMurer,colonneAMurer) :
+                    ligneAModifier=self.grille[int(ligneAMurer)]
+                    self.grille[int(ligneAMurer)]=ligneAModifier[:colonneAMurer] + "-" + ligneAModifier[colonneAMurer+1:]
+
+    def supprimerMur(self,clientID,sens) :
+        print("====>On va supprimer un mur")
+        # On commence par trouver la position du robot
+        for elt in self.lesJoueurs :
+            if elt==clientID :
+                ligneRobot=self.lesJoueurs[elt][3][0]
+                colonneRobot=self.lesJoueurs[elt][3][1]
+                ligneAMurer=ligneRobot
+                colonneAMurer=colonneRobot
+                if sens=="N" :
+                    ligneAMurer=ligneAMurer-1
+                if sens=="S" :
+                    ligneAMurer=ligneAMurer+1
+                if sens=="E" :
+                    colonneAMurer=colonneAMurer+1
+                if sens=="O" :
+                    colonneAMurer=colonneAMurer-1
+                if self.estUnePorte(ligneAMurer,colonneAMurer) :
+                    ligneAModifier=self.grille[int(ligneAMurer)]
+                    self.grille[int(ligneAMurer)]=ligneAModifier[:colonneAMurer] + "." + ligneAModifier[colonneAMurer+1:]
+
+
+    def estUnePorte(self,ligne,colonne) :
+        # On regarde si on sort du cadre
+        if ligne>self.tailleGrille[0] or ligne<0 :
+            return False
+        if colonne>self.tailleGrille[1] or colonne<0 :
+            return False
+        # Puis on regarde si la case est "disponible"
+        ch=self.grille[int(ligne)]
+
+        if ch[colonne]=="." or ch[colonne]=="-" :
+            return True
+        else :
+            return False
+
     def placeLibre(self,ligne,colonne) :
         # On regarde si on sort du cadre
         if ligne>self.tailleGrille[0] or ligne<0 :

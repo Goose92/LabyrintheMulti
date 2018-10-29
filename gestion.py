@@ -67,7 +67,7 @@ def formatLigneOK(chaine) :
 
 def choixValide(direction) :
     if len(direction)==0 :
-        return False
+        return 0
     else :
         if direction[0]=="N" or direction[0]=="S" or direction[0]=="E" or direction[0]=="O" :
             nbCoupsDirection=direction[1:]
@@ -78,11 +78,23 @@ def choixValide(direction) :
                     int(nbCoupsDirection)
                 except ValueError:
                     #print("Lorsque vous souhaitez des coups multiples, il faut saisir une valeur numérique après la direction")
-                    return False
-            return True
+                    return 0
+            return 1
         else :
-            return False
-    return False
+            if direction[0]=="m" :
+                if len(direction)==2 :
+                    if direction[1]=="N" or direction[1]=="S" or direction[1]=="E" or direction[1]=="O" :
+                        return 2
+                else :
+                    return 0
+            if direction[0]=="p" :
+                if len(direction)==2 :
+                    if direction[1]=="N" or direction[1]=="S" or direction[1]=="E" or direction[1]=="O" :
+                        return 3
+                else :
+                    return 0
+            return 0
+    return 0
 
 def nbCoupsJoue(direction) :
     if len(direction)==1 :
