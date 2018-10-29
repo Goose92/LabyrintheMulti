@@ -215,7 +215,6 @@ class Partie:
     def presenceRobot(self,ligne,colonne) :
         for elt in self.lesJoueurs :
             if self.lesJoueurs[elt][3][0]==ligne and self.lesJoueurs[elt][3][1]==colonne :
-                print("Il y a quelqu'un")
                 return True
         return False
 

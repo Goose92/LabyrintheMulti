@@ -21,7 +21,8 @@ EtatCommunication="PASSIF"
 ordreRecu=False
 print("En attente des autres joueurs")
 
-while msg_a_envoyer != b"fin":
+partieTerminee=False
+while msg_a_envoyer != b"fin" and partieTerminee==False :
     if EtatCommunication=="ACTIF" :
         #print("Je suis en ACTIF, je peux donc envoyer")
 
@@ -69,6 +70,8 @@ while msg_a_envoyer != b"fin":
                     print(message[5:])
                 else :
                     print(message)
+                    if message[:7]=="[GAGNE]" :
+                        partieTerminee=True
 
 print("Fermeture de la connexion")
 connexion_avec_serveur.close()

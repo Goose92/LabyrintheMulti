@@ -43,7 +43,7 @@ print("La position des joueurs a été initialisée")
 
 #lePlateau.partie.afficherCartePartie()
 
-time.sleep(1)
+#time.sleep(0.1)
 
 lePlateau.partie.afficherCarteATous(clients_connectes,nbCoups)
 lePlateau.partie.initialiserToursjoueurs()
@@ -62,8 +62,6 @@ lePlateau.partie.messageAuxPassifs(joueurActuel,clients_connectes,"[MSG]" + "C'e
 
 lePlateau.partie.afficherPositionDesRobots()
 print(lePlateau.partie.carteAvecRobot())
-
-lePlateau.partie.afficherChampsjoueur()
 
 print("Début de la partie\n")
 
@@ -113,21 +111,20 @@ while serveur_lance:
                         print("Gagné")
                         lePlateau.partie.toutLeMondePassif(clients_connectes)
                         lePlateau.partie.messageATous(clients_connectes,"[GAGNE]" + "Victoire du joueur " + lePlateau.partie.nomJoueur(joueurActuel))
+                        print(lePlateau.partie.carteAvecRobot())
+                        print("Victoire du joueur " + lePlateau.partie.nomJoueur(joueurActuel))
+                        serveur_lance = False
                     else :
                         joueurActuel=joueurSuivant(joueurActuel,int(nbJoueurs))
                         lePlateau.partie.donnerLaMain(joueurActuel,clients_connectes)
                         lePlateau.partie.messageAuxPassifs(joueurActuel,clients_connectes,"[MSG]" + "C'est à " + lePlateau.partie.nomJoueur(joueurActuel) + " de jouer")
-
-                    print(lePlateau.partie.carteAvecRobot())
+                        print(lePlateau.partie.carteAvecRobot())
 
 
 
             #print("Nombre de joueurs = " + str(lePlateau.partie.nbJoueurs()))
 
-#print("Nombre de joueurs = " + str(lePlateau.partie.nbJoueurs()))
-print("Fermeture des connexions")
-
-lePlateau.partie.afficherListeJoueurs()
+print("fin du jeu")
 connexion_principale.close()
 
 

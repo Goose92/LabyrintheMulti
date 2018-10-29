@@ -122,7 +122,6 @@ class Plateau:
                 if sens=="N" :
                     # Test de la case cible pour voir si on peut y aller
                     if self.partie.coupValide(ligneRobot-1,colonneRobot)==True and self.partie.presenceRobot(ligneRobot-1,colonneRobot)==False :
-                        print("on joue N")
                         self.partie.lesJoueurs[elt][3][0]=self.partie.lesJoueurs[elt][3][0]-1
                     else :
                         self.partie.pointDeVie=self.partie.pointDeVie-1
@@ -131,7 +130,6 @@ class Plateau:
                 if sens=="S" :
                     # Test de la case cible pour voir si on peut y aller
                     if self.partie.coupValide(ligneRobot+1,colonneRobot)==True and self.partie.presenceRobot(ligneRobot+1,colonneRobot)==False :
-                        print("on joue S")
                         self.partie.lesJoueurs[elt][3][0]=self.partie.lesJoueurs[elt][3][0]+1
                     else :
                         self.partie.pointDeVie=self.partie.pointDeVie-1
@@ -140,7 +138,6 @@ class Plateau:
                 if sens=="E" :
                     # Test de la case cible pour voir si on peut y aller
                     if self.partie.coupValide(ligneRobot,colonneRobot+1)==True and self.partie.presenceRobot(ligneRobot,colonneRobot+1)==False :
-                        print("on joue E")
                         self.partie.lesJoueurs[elt][3][1]=self.partie.lesJoueurs[elt][3][1]+1
                     else :
                         self.partie.pointDeVie=self.partie.pointDeVie-1
@@ -149,7 +146,6 @@ class Plateau:
                 if sens=="O" :
                     # Test de la case cible pour voir si on peut y aller
                     if self.partie.coupValide(ligneRobot,colonneRobot-1)==True and self.partie.presenceRobot(ligneRobot,colonneRobot-1)==False :
-                        print("on joue O")
                         self.partie.lesJoueurs[elt][3][1]=self.partie.lesJoueurs[elt][3][1]-1
                     else :
                         self.partie.pointDeVie=self.partie.pointDeVie-1
