@@ -8,7 +8,13 @@ hote = "localhost"
 port = 12800
 
 connexion_avec_serveur = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-connexion_avec_serveur.connect((hote, port))
+
+try :
+    connexion_avec_serveur.connect((hote, port))
+except :
+    print("Désolé, il n'y a aucun serveur lancé")
+    exit(0)
+
 numID=connexion_avec_serveur.getsockname()[1]
 print("Vous êtes connectés avec le serveur labyrinthe sur le port " + str((port)) + " et votre ID est " + str(numID))
 
