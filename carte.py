@@ -7,6 +7,12 @@
 import os
 from gestion import saisieLigneOK,formatLigneOK,choixValide,nbCoupsJoue,sensJoue,supprimerFichierCarte
 
+CASE_MUR="O"
+CASE_PORTE_OUVERTE="."
+CASE_PORTE_FERMEE="-"
+CASE_SORTIE="U"
+CASE_VIDE=" "
+
 class Carte:
 
     """Objet de transition entre un fichier et un labyrinthe."""
@@ -74,16 +80,13 @@ class Carte:
         return True
 
     def carteValide(self) :
-        # Une carte doit obligatoirement contenir un seul X et au moins un U
+        # Une carte doit obligatoirement contenir au moins un U
         nbU=0
-        nbX=0
         for elt in self.labyrinthe :
             for i in range(0,int(len(elt))) :
-                if elt[i]=="U" :
+                if elt[i]==CASE_SORTIE :
                     nbU=nbU+1
-                if elt[i]=="X" :
-                    nbX=nbX+1
-        if nbX==1 and nbU>=1 :
+        if nbU>=1 :
             return True
         return False
 

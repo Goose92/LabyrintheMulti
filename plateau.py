@@ -29,11 +29,6 @@ class Plateau:
         for elt in self.cartes :
             print("Carte : " + elt.nom)
             elt.afficherCarte()
-        #print("Nb de coups : " + str(self.partie.nbCoups))
-        #print("Taille max Grille  : " + str(self.partie.tailleGrille[0]) + " et " + str(self.partie.tailleGrille[1]))
-        #print("Position du robot  : " + str(self.partie.robot[0]) + " et " + str(self.partie.robot[1]))
-        #print("Gagne : " + str(self.partie.gagne))
-        #print("Points de vie : " + str(self.partie.pointDeVie))
 
     def sauvegarderPartie(self) :
         # On sauvegarde la carte de la partie
@@ -81,7 +76,7 @@ class Plateau:
         choixUtilisateurValide=False
 
         while choixUtilisateurValide==False :
-            choixCarte=saisieNombre("Quel numero de carte souhaitez vous afficher ? ( 0 pour quitter)")
+            choixCarte=saisieNombre("Avec quel carte souhaitez vous jouer ? ( 0 pour quitter)")
 
             if choixCarte >0 and choixCarte<=self.nombreDeCartes() :
                 print("Vous souhaitez jouer avec la carte " + self.cartes[choixCarte-1].nom)
@@ -92,8 +87,10 @@ class Plateau:
                 if choixCarte==0 :
                     # On revient au menu précédent
                     choixUtilisateurValide=True
+                    return False
                 else :
                     print("Le numéro ne correspond pas à un numéro de carte existant")
+        return True
 
     def afficherCartes(self) :
         for elt in self.cartes :
@@ -140,7 +137,7 @@ class Plateau:
             self.cartes.append(nouvelleCarte)
             nouvelleCarte.enregistrerNouvelleCarte()
         else :
-            print("Erreur dans le format (il faut au moins un U et un seul X)")
+            print("Erreur dans le format (il faut au moins un U)")
         finEditionMenu=True
 
     def presentationDesJoueurs(self, nbJoueursConnectes,clients_connectes) :

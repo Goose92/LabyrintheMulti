@@ -4,6 +4,12 @@ import socket
 import select
 import os,sys
 
+CASE_MUR="O"
+CASE_PORTE_OUVERTE="."
+CASE_PORTE_FERMEE="-"
+CASE_SORTIE="U"
+CASE_VIDE=" "
+
 def lancementServeur(hote,port) :
     connexion_principale = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     connexion_principale.bind((hote, port))
@@ -39,15 +45,6 @@ def flush_input():
         import sys, termios
         termios.tcflush(sys.stdin, termios.TCIOFLUSH)
 
-def joueurSuivant(num,max) :
-    suivant=num+1
-    if suivant>=max :
-       # print("le suivant est :0")
-        return 0
-    else :
-       # print("le suivant est " + str(suivant))
-        return suivant
-
 def saisieLigneOK(nb,chaine):
     if len(chaine) == int(nb) :
         if formatLigneOK(chaine) :
@@ -61,7 +58,7 @@ def saisieLigneOK(nb,chaine):
 
 def formatLigneOK(chaine) :
     for lettre in chaine:
-        if not(lettre =="X" or lettre =="O" or lettre =="." or lettre ==" " or lettre =="U") :
+        if not(lettre ==CASE_PORTE_FERMEE or lettre ==CASE_MUR or lettre ==CASE_PORTE_OUVERTE or lettre==CASE_PORTE_FERMEE or lettre ==CASE_VIDE or lettre ==CASE_SORTIE) :
             return False
     return True
 

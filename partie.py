@@ -7,6 +7,12 @@
 import os,socket,select,time,copy
 from random import randint
 
+CASE_MUR="O"
+CASE_PORTE_OUVERTE="."
+CASE_PORTE_FERMEE="-"
+CASE_SORTIE="U"
+CASE_VIDE=" "
+
 class Partie:
 
     """Classe représentant un partie"""
@@ -22,12 +28,21 @@ class Partie:
             # Champ 5 : le nb de points de vie
 
         self.lesJoueurs=dict() # un dictionnaire avec nom, puis connection, puis tour (si true c'est à son tour)
-        self.nbCoups=0
+        #self.nbCoups=0
         self.tailleGrille=[0,0]
-        self.robot=[0,0]
+        #self.robot=[0,0]
         self.gagne=False
-        self.pointDeVie=100
+        #self.pointDeVie=100
         self.listeJoueurs=[]
+
+    def joueurSuivant(self,num,max) :
+        suivant=num+1
+        if suivant>=max :
+           # print("le suivant est :0")
+            return 0
+        else :
+           # print("le suivant est " + str(suivant))
+            return suivant
 
     def nomJoueur(self,num) :
         indice=0
@@ -42,7 +57,6 @@ class Partie:
               if indice==num :
                   return self.lesJoueurs[elt][5]
               indice=indice+1
-
 
     def afficherChampsjoueur(self) :
         for elt in self.lesJoueurs :
@@ -127,13 +141,10 @@ class Partie:
         except select.error:
             pass
         num=0
-        #print("=====" + str(joueurActif))
         for client in connection:
-           # print(client)
             if num==int(joueurActif) :
                 client.send(messageAEnvoyer.encode())
             num=num+1
-            print("nb vies")
 
     def annoncerNumeroAuxJoueurs(self,connection) :
         clients_a_lire = []
@@ -177,7 +188,6 @@ class Partie:
         for elt in self.lesJoueurs :
             laLigneAModifier=copieGrille[self.lesJoueurs[elt][3][0]]
 
-            #laLigne=laLigneAModifier[:self.lesJoueurs[elt][3][1]] + "$" + laLigneAModifier[self.lesJoueurs[elt][3][1]+1:]
             laLigne=laLigneAModifier[:self.lesJoueurs[elt][3][1]] + self.lesJoueurs[elt][4] + laLigneAModifier[self.lesJoueurs[elt][3][1]+1:]
             copieGrille[self.lesJoueurs[elt][3][0]]=laLigne
 
@@ -187,7 +197,7 @@ class Partie:
         laCarte=laCarte[0:int(len(laCarte))-1]
         return laCarte
 
-    def nbJoueurs(self):
+    def A_SUPPR_nbJoueurs(self):
         return len(self.lesJoueurs)
 
     def mettreAJourNomJoueur(self,ID,nom) :
@@ -211,7 +221,7 @@ class Partie:
         # Puis on regarde si la case est "disponible"
         ch=self.grille[int(ligne)]
 
-        if ch[colonne]==" " or ch[colonne]=="." or ch[colonne]=="U" :
+        if ch[colonne]==CASE_VIDE or ch[colonne]==CASE_PORTE_OUVERTE or ch[colonne]==CASE_SORTIE :
             return True
         else :
             return False
@@ -220,7 +230,7 @@ class Partie:
         # Puis on regarde si la case est "disponible"
         ch=self.grille[int(ligne)]
 
-        if ch[colonne]=="U" :
+        if ch[colonne]==CASE_SORTIE :
             return True
         else :
             return False
@@ -243,7 +253,7 @@ class Partie:
                     colonneAMurer=colonneAMurer-1
                 if self.estUnePorte(ligneAMurer,colonneAMurer) :
                     ligneAModifier=self.grille[int(ligneAMurer)]
-                    self.grille[int(ligneAMurer)]=ligneAModifier[:colonneAMurer] + "-" + ligneAModifier[colonneAMurer+1:]
+                    self.grille[int(ligneAMurer)]=ligneAModifier[:colonneAMurer] + CASE_PORTE_FERMEE + ligneAModifier[colonneAMurer+1:]
 
     def supprimerMur(self,clientID,sens) :
         # On commence par trouver la position du robot
@@ -263,7 +273,7 @@ class Partie:
                     colonneAMurer=colonneAMurer-1
                 if self.estUnePorte(ligneAMurer,colonneAMurer) :
                     ligneAModifier=self.grille[int(ligneAMurer)]
-                    self.grille[int(ligneAMurer)]=ligneAModifier[:colonneAMurer] + "." + ligneAModifier[colonneAMurer+1:]
+                    self.grille[int(ligneAMurer)]=ligneAModifier[:colonneAMurer] + CASE_PORTE_OUVERTE + ligneAModifier[colonneAMurer+1:]
 
 
     def estUnePorte(self,ligne,colonne) :
@@ -275,7 +285,7 @@ class Partie:
         # Puis on regarde si la case est "disponible"
         ch=self.grille[int(ligne)]
 
-        if ch[colonne]=="." or ch[colonne]=="-" :
+        if ch[colonne]==CASE_PORTE_OUVERTE or ch[colonne]==CASE_PORTE_FERMEE :
             return True
         else :
             return False
@@ -330,12 +340,12 @@ class Partie:
         # Puis on regarde si la case est "disponible"
         ch=self.grille[int(ligne)]
 
-        if ch[colonne]==" " or ch[colonne]=="." :
+        if ch[colonne]==CASE_VIDE or ch[colonne]==CASE_PORTE_OUVERTE :
             return True
         else :
             return False
 
-    def chargerSauvegarde(self) :
+    def ASUPPR_chargerSauvegarde(self) :
         chemin = os.path.join("sauvegardes", "sauvegardes.txt")
         if os.path.exists(chemin) == True :
             nouveauFichier=open(chemin, "r")
@@ -355,7 +365,7 @@ class Partie:
         else :
            return False
 
-    def initialiserPositionRobot(self) :
+    def ASUPPR_initialiserPositionRobot(self) :
         numLigne=0
         for ligne in self.grille :
             for numColonne in range(0,int(len(ligne))) :
