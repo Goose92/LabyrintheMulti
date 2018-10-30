@@ -215,11 +215,14 @@ class Partie:
         copieGrille=[]
         copieGrille=copy.copy(self.grille)
 
+        num=0
         for elt in self.lesJoueurs :
-            laLigneAModifier=copieGrille[self.lesJoueurs[elt][3][0]]
+            if self.estVivant(num)==True :
+                laLigneAModifier=copieGrille[self.lesJoueurs[elt][3][0]]
 
-            laLigne=laLigneAModifier[:self.lesJoueurs[elt][3][1]] + self.lesJoueurs[elt][4] + laLigneAModifier[self.lesJoueurs[elt][3][1]+1:]
-            copieGrille[self.lesJoueurs[elt][3][0]]=laLigne
+                laLigne=laLigneAModifier[:self.lesJoueurs[elt][3][1]] + self.lesJoueurs[elt][4] + laLigneAModifier[self.lesJoueurs[elt][3][1]+1:]
+                copieGrille[self.lesJoueurs[elt][3][0]]=laLigne
+            num=num+1
 
         for elt in copieGrille :
             laCarte=laCarte + elt + "\n"
@@ -236,9 +239,12 @@ class Partie:
         self.lesJoueurs[ID]=ancienJoueur
 
     def presenceRobot(self,ligne,colonne) :
+        num=0
         for elt in self.lesJoueurs :
-            if self.lesJoueurs[elt][3][0]==ligne and self.lesJoueurs[elt][3][1]==colonne :
-                return True
+            if self.estVivant(num) == True :
+                if self.lesJoueurs[elt][3][0]==ligne and self.lesJoueurs[elt][3][1]==colonne :
+                    return True
+            num=num+1
         return False
 
     def coupValide(self,ligne,colonne) :
