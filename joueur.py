@@ -1,3 +1,6 @@
+# -*-coding:Utf-8 -*
+
+
 class Joueur:
 
     """Classe représentant un joueur"""

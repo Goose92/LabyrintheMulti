@@ -3,12 +3,8 @@
 import socket
 import select
 import os,sys
+from constants import CASE_MUR,CASE_PORTE_OUVERTE,CASE_PORTE_FERMEE,CASE_SORTIE,CASE_VIDE,NB_PTS_DE_VIE_INIT
 
-CASE_MUR="O"
-CASE_PORTE_OUVERTE="."
-CASE_PORTE_FERMEE="-"
-CASE_SORTIE="U"
-CASE_VIDE=" "
 
 def lancementServeur(hote,port) :
     connexion_principale = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

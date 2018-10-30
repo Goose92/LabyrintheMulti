@@ -3,24 +3,20 @@
 
 import socket,string
 from gestion import flush_input,choixValide
+from constants import HOTE,PORT,NB_PTS_DE_VIE_INIT
 
-NB_PTS_DE_VIE_INIT=100
-
-hote = "localhost"
-port = 12800
 nbVie=NB_PTS_DE_VIE_INIT
-
 
 connexion_avec_serveur = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 try :
-    connexion_avec_serveur.connect((hote, port))
+    connexion_avec_serveur.connect((HOTE, PORT))
 except :
     print("Désolé, il n'y a aucun serveur lancé")
     exit(0)
 
 numID=connexion_avec_serveur.getsockname()[1]
-print("Vous êtes connectés avec le serveur labyrinthe sur le port " + str((port)) + " et votre ID est " + str(numID))
+print("Vous êtes connectés avec le serveur labyrinthe sur le port " + str((PORT)) + " et votre ID est " + str(numID))
 
 nomJoueur=input("Votre nom : ")
 nomJoueurTmp="[NOM]"+nomJoueur
