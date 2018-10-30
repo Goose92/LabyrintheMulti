@@ -94,16 +94,20 @@ while msg_a_envoyer != b"fin" and partieTerminee==False :
                             numJoueur=message[9:]
                             print("Vous êtes le robot numero " + message[9:])
                         else :
-                            if message[:5]=="[VIE]" :
-                                #numJoueur=message[5:]
-                                nbVie=int(message[5:])
-                                if nbVie>0 :
-                                    print("Vous avez " + str(nbVie) +  " vies " )
-                                else :
-                                    print("Il semble que vous n'ayez plus de vie ...(GAME OVER)")
-                                    print("En attente de la fin de partie (vous pouvez suivre la partie, mais sans jouer")
+                            if message[:5]=="[FIN]" :
+                                partieTerminee=True
+                                print("Tout le monde est mort")
                             else :
-                                print(message)
+                                if message[:5]=="[VIE]" :
+                                    #numJoueur=message[5:]
+                                    nbVie=int(message[5:])
+                                    if nbVie>0 :
+                                        print("Vous avez " + str(nbVie) +  " vies " )
+                                    else :
+                                        print("Il semble que vous n'ayez plus de vie ...(GAME OVER)")
+                                        print("En attente de la fin de partie (vous pouvez suivre la partie, mais sans jouer")
+                                else :
+                                    print(message)
 
 print("Fermeture de la connexion")
 connexion_avec_serveur.close()

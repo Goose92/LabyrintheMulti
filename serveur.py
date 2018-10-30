@@ -240,7 +240,7 @@ while serveur_lance:
             else :
                 if msg_recu != "" :
                     # On peut prendre en compte le coup
-                    print("On peut jouer le coup - " + str(lePlateau.partie.nomJoueur(joueurActuel)) + " (" + str(clientID) + ") : " + str(msg_recu) )
+                    #print("On peut jouer le coup - " + str(lePlateau.partie.nomJoueur(joueurActuel)) + " (" + str(clientID) + ") : " + str(msg_recu) )
                     retour=choixValide(msg_recu)
                     if retour == 1 :
                         nbCoups=nbCoupsJoue(msg_recu)
@@ -280,9 +280,15 @@ while serveur_lance:
                         serveur_lance = False
                     else :
                         joueurActuel=lePlateau.partie.joueurSuivant(joueurActuel,int(nbJoueurs))
-                        lePlateau.partie.donnerLaMain(joueurActuel,clients_connectes)
-                        lePlateau.partie.messageAuxPassifs(joueurActuel,clients_connectes,"[MSG]" + "C'est à " + lePlateau.partie.nomJoueur(joueurActuel) + " de jouer")
-                        print(lePlateau.partie.carteAvecRobot())
+                        if joueurActuel!=-1 :
+                            lePlateau.partie.donnerLaMain(joueurActuel,clients_connectes)
+                            lePlateau.partie.messageAuxPassifs(joueurActuel,clients_connectes,"[MSG]" + "C'est à " + lePlateau.partie.nomJoueur(joueurActuel) + " de jouer")
+                            print(lePlateau.partie.carteAvecRobot())
+                        else : # Tout le monde est mort
+                            lePlateau.partie.messageAuxPassifs(joueurActuel,clients_connectes,"[FIN]")
+                            print("Tout le monde est mort")
+                            serveur_lance=False
+
 
 
             #print("Nombre de joueurs = " + str(lePlateau.partie.nbJoueurs()))
