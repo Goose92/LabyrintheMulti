@@ -16,7 +16,6 @@ clients_a_lire = []
 nbCoups=1
 
 # Si la version Python utilisee est inferieure a 3, on sort (necessaire pour certaines fonctions)
-print(sys.version_info)
 if (sys.version_info > (3, 0)):
     print("")
 else:

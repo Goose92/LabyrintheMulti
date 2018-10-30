@@ -1,9 +1,16 @@
 # -*-coding:Utf-8 -*
 
 
-import socket,string
+import socket,string,sys
 from gestion import flush_input,choixValide
 from constants import HOTE,PORT,NB_PTS_DE_VIE_INIT
+
+# Si la version Python utilisee est inferieure a 3, on sort (necessaire pour certaines fonctions)
+if (sys.version_info > (3, 0)):
+    print("")
+else:
+    print("Desole, il faut lancer le programme en python 3 avec la commande PYTHON3")
+    exit(0)
 
 nbVie=NB_PTS_DE_VIE_INIT
 
