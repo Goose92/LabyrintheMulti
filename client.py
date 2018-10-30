@@ -34,18 +34,20 @@ print("En attente des autres joueurs")
 numJoueur="XXXXX"
 partieTerminee=False
 while msg_a_envoyer != b"fin" and partieTerminee==False :
+    #print("===>" + nomJoueur + " Robot " + str(numJoueur) + " (Nombre de vies "+ str(nbVie))
     if EtatCommunication=="ACTIF" :
         # Je suis en ACTIF, je peux donc envoyer
         ordreOk=False
         while ordreOk==False :
             flush_input() # je vide le cache
-            msg_a_envoyer = input(nomJoueur + " Robot " + str(numJoueur) + " (Nombre de vies "+ str(nbVie) + "), at your command (? pour l'aide) : ")
+            msg_a_envoyer = input(nomJoueur + " [Robot " + str(numJoueur) + "] (Nombre de vies "+ str(nbVie) + "), at your command (? pour l'aide) : ")
             if msg_a_envoyer=="?" :
                 print("Vous pouvez vous déplacer au nord (N), au sud (S), à l'est (E) et à l'ouest (O)")
                 print("Pour vous déplacer au nord sur une seule case : N ou N1 (pour les autres directions : S, E et O")
                 print("Pour vous déplacer au nord sur 3 cases : N3 (pour les autres directions : S3, E3 et O3)")
                 print("Pour murer une porte sur la case au sud (juste à proximité) : mS (pour les autres directions : mE,mN et mO)")
                 print("Pour percer une porte sur la case au sud (juste à proximité) : pS (pour les autres directions : pE,pN et pO)")
+                print("Si vous souhaitez abandonner : A")
                 print("A chaque choc contre un obstacle (mur, joueur, porte fermé, vous perdez un point de vie")
             else :
                 if msg_a_envoyer=="fin" :
@@ -72,7 +74,7 @@ while msg_a_envoyer != b"fin" and partieTerminee==False :
         except :
             print("pb")
         message=msg_recu.decode()
-
+        #print("Message recu : " + message)
         if message=="[ACTIF]" :
             tour=True
             ordreRecu=True

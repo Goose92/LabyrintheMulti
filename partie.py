@@ -35,14 +35,44 @@ class Partie:
         #self.pointDeVie=100
         self.listeJoueurs=[]
 
+    def resteDesVivants(self) :
+        reste=False
+        for elt in self.lesJoueurs :
+            if self.lesJoueurs[elt][5]>0 :
+                reste = True
+        return reste
+
+    def estVivant(self,num) :
+        indice=0
+        for elt in self.lesJoueurs :
+            if indice==num :
+                if self.lesJoueurs[elt][5]>0 :
+                    return True
+                else :
+                    return False
+            indice=indice+1
+
+    def tuerJoueur(self,joueur):
+        indice=0
+        for elt in self.lesJoueurs :
+            if indice==joueur :
+                self.lesJoueurs[elt][5]=0
+            indice=indice+1
+
     def joueurSuivant(self,num,max) :
-        suivant=num+1
-        if suivant>=max :
-           # print("le suivant est :0")
-            return 0
+        trouve=False
+        if self.resteDesVivants()==False :
+            return -1
         else :
-           # print("le suivant est " + str(suivant))
-            return suivant
+            suivant=num+1
+            while trouve==False :
+                if suivant>=max :
+                    suivant=0
+                if self.estVivant(suivant) == True :
+                    trouve=True
+                    return suivant
+                else :
+                    suivant=suivant+1
 
     def nomJoueur(self,num) :
         indice=0

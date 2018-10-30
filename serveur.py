@@ -24,13 +24,18 @@ CASE_SORTIE="U"
 CASE_VIDE=" "
 NB_PTS_DE_VIE_INIT=100
 
+
 print("****************************")
 print("Il faut gérer les fin de vie pour les utilisateurs")
 print("Il faut gérer les coups multiple en un par un (notion de buffer ?")
 print("Voir pour creer l'objet joueur pour regrouper plein de chose")
 print("Faire un readme qui explique le jeu et le programme ainsi que les ouvertes (gestion des étages")
+print("Dire qu'on peut faire évoluer le menu pour recommencer une partie sans deconnecter les joueurs, etc. voir le mettre en place")
 print("Faire le ménage dans fonction initilisé  = enlever celle que j'ai prémarqué par ASUPPR_")
 print("Mettre les constants dans un fichier et l'importer où j'en ai besoin")
+print("quand un joueur meurt, il ne faut plus l'qfficher")
+print("Insister su rle fait qu'il faut lancer avec Python3 et non pas python")
+print("il faut verifier que la carte choisie a bien le nb de case vide corresondant avec le nb de joueurs attendus")
 print("****************************")
 
 nbJoueurs=nbJoueursAttendu() # On regarde dans paramètres le nombre de joueurs attendus, on sort si problème
@@ -243,14 +248,22 @@ while serveur_lance:
                         for i in range(0,int(nbCoups)) :
                             lePlateau.partie.jouerUnCoup(clientID,sens)
                         lePlateau.partie.messageNbVies(joueurActuel,clients_connectes)
+                        print(str(lePlateau.partie.nomJoueur(joueurActuel)) + " a joué " + str(msg_recu) + " (il lui reste " + str(lePlateau.partie.nbPtsJoueur(joueurActuel)) + " points)")
 
                     if retour == 2 :
                         lePlateau.partie.creerMur(clientID,msg_recu[1])
                         nbCoups=0
+                        print(str(lePlateau.partie.nomJoueur(joueurActuel)) + " a joué " + str(msg_recu) + " (il lui reste " + str(lePlateau.partie.nbPtsJoueur(joueurActuel)) + " points)")
+
                     if retour == 3 :
                         lePlateau.partie.supprimerMur(clientID,msg_recu[1])
                         nbCoups=0
-                    print(str(lePlateau.partie.nomJoueur(joueurActuel)) + "a joué " + str(msg_recu) + " (il lui reste " + str(lePlateau.partie.nbPtsJoueur(joueurActuel)) + " points)")
+                        print(str(lePlateau.partie.nomJoueur(joueurActuel)) + " a joué " + str(msg_recu) + " (il lui reste " + str(lePlateau.partie.nbPtsJoueur(joueurActuel)) + " points)")
+
+                    if retour == 4 : # Abandon du joueur
+                        lePlateau.partie.tuerJoueur(joueurActuel)
+                        lePlateau.partie.messageNbVies(joueurActuel,clients_connectes)
+                        print(str(lePlateau.partie.nomJoueur(joueurActuel)) + " vient d'abandonner")
 
 
                     #lePlateau.partie.afficherCartePartie()

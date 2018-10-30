@@ -90,6 +90,11 @@ def choixValide(direction) :
                         return 3
                 else :
                     return 0
+            if direction[0]=="A" :
+               if len(direction)==1 :
+                   return 4
+               else :
+                    return 0
             return 0
     return 0
 
