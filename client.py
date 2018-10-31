@@ -48,7 +48,6 @@ while msg_a_envoyer != b"fin" and partieTerminee==False :
             flush_input() # je vide le cache
 
             if CoupsMutiples[1]<=int(0) :
-                print("Pas de coups multiples en stock")
                 msg_a_envoyer = input(nomJoueur + " [Robot " + str(numJoueur) + "] (Nombre de vies "+ str(nbVie) + "), at your command (? pour l'aide) : ")
                 if msg_a_envoyer=="?" :
                     print("Vous pouvez vous déplacer au nord (N), au sud (S), à l'est (E) et à l'ouest (O)")
@@ -72,13 +71,12 @@ while msg_a_envoyer != b"fin" and partieTerminee==False :
                         else :
                             print("Coup incorrect, consultez l'aide pour plus de précisions (? pour l'aide)")
             else :
-                print("Il y a des coups multiples en stock")
+                print("Il y a des coups multiples en stock " + str(CoupsMutiples[0]) + str(CoupsMutiples[1]) + " => déplacement automatique")
                 msg_a_envoyer=CoupsMutiples[0]
                 CoupsMutiples[1]=CoupsMutiples[1]-1
                 #print("=====>" +msg_a_envoyer)
                 ordreOk=True
 
-        print("Voici le message que je vais envoyer : " + msg_a_envoyer)
         msg_a_envoyer = msg_a_envoyer.encode()
         # Peut planter si vous tapez des caractères spéciaux
         try :
