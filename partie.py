@@ -42,6 +42,15 @@ class Partie:
                 reste = True
         return reste
 
+    def nbCasesLibres(self) :
+        # permet de connaitre le nombre de places libres sur une carte afin de ne pas l'autoriser si le nombre de joueurs est supérieur
+        nbVide=0
+        for elt in self.grille :
+            for i in range(0,int(len(elt))) :
+                if elt[i]==CASE_VIDE or elt[i]==CASE_PORTE_OUVERTE:
+                    nbVide=nbVide+1
+        return nbVide
+
     def estVivant(self,num) :
         indice=0
         for elt in self.lesJoueurs :

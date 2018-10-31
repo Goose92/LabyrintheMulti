@@ -25,10 +25,7 @@ else:
 print("****************************")
 print("Il faut gerer les coups multiple en un par un (notion de buffer ?")
 print("Voir pour creer l'objet joueur pour regrouper plein de chose")
-print("Faire un readme qui explique le jeu et le programme ainsi que les ouvertes (gestion des etages")
-print("Dire qu'on peut faire evoluer le menu pour recommencer une partie sans deconnecter les joueurs, etc. voir le mettre en place")
 print("Faire le menage dans fonction initilisee  = enlever celle que j'ai premarque par ASUPPR_")
-print("Insister su rle fait qu'il faut lancer avec Python3 et non pas python")
 print("il faut verifier que la carte choisie a bien le nb de case vide corresondant avec le nb de joueurs attendus")
 print("****************************")
 
@@ -42,10 +39,10 @@ lePlateau.chargerPlateau()
 sortieMenu=False
 while sortieMenu==False :
     print("Menu du jeu : ")
-    print("     J - Lancer le jeux avec les " + str(nbJoueurs) + " joueur(s) attendu(s)")
+    print("     J - Lancer le jeu avec les " + str(nbJoueurs) + " joueur(s) attendu(s)")
     print("     V - Voir les cartes existantes")
     print("     E - Editer les cartes")
-    print("     Q - Quitter leu jeu")
+    print("     Q - Quitter le jeu")
     choixMenuPrincipal = input("Entrez votre choix : ")
 
     if choixMenuPrincipal=="J" or choixMenuPrincipal=="V" or choixMenuPrincipal=="E" or choixMenuPrincipal=="Q" or choixMenuPrincipal=="j" or choixMenuPrincipal=="v" or choixMenuPrincipal=="e" or choixMenuPrincipal=="q" :
@@ -163,9 +160,15 @@ while sortieMenu==False :
 
 lePlateau.listerCartes()
 
-if lePlateau.choisirCartePartie()==False :
-    print("Au revoir, a bientot")
-    exit(0)
+carteOk=False
+while carteOk==False :
+    if lePlateau.choisirCartePartie()==False :
+        print("Au revoir, a bientot")
+        exit(0)
+    if int(lePlateau.partie.nbCasesLibres())>int(nbJoueurs) :
+        carteOk=True
+    else :
+        print("La carte que vous avez choisi n'a pas assez de places libres pour accueillir les joueurs attendus")
 
 lePlateau.partie.initialiserTailleMaxGrille()
 print("Taille de la grille : " + str(lePlateau.partie.tailleGrille[0]) + " par " +  str(lePlateau.partie.tailleGrille[1]))
