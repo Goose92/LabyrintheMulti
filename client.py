@@ -2,7 +2,7 @@
 
 
 import socket,string,sys
-from gestion import flush_input,choixValide
+from gestion import flush_input,choixValide,sensJoue,nbCoupsJoue
 from constants import HOTE,PORT,NB_PTS_DE_VIE_INIT
 
 # Si la version Python utilisee est inferieure a 3, on sort (necessaire pour certaines fonctions)
@@ -35,32 +35,50 @@ ordreRecu=False
 print("En attente des autres joueurs")
 
 numJoueur="XXXXX"
+
+CoupsMutiples=["",int(0)] # Pour se souvenir des coups multiples (buffer)
+
 partieTerminee=False
 while msg_a_envoyer != b"fin" and partieTerminee==False :
-    #print("===>" + nomJoueur + " Robot " + str(numJoueur) + " (Nombre de vies "+ str(nbVie))
     if EtatCommunication=="ACTIF" :
         # Je suis en ACTIF, je peux donc envoyer
         ordreOk=False
         while ordreOk==False :
+
             flush_input() # je vide le cache
-            msg_a_envoyer = input(nomJoueur + " [Robot " + str(numJoueur) + "] (Nombre de vies "+ str(nbVie) + "), at your command (? pour l'aide) : ")
-            if msg_a_envoyer=="?" :
-                print("Vous pouvez vous déplacer au nord (N), au sud (S), à l'est (E) et à l'ouest (O)")
-                print("Pour vous déplacer au nord sur une seule case : N ou N1 (pour les autres directions : S, E et O")
-                print("Pour vous déplacer au nord sur 3 cases : N3 (pour les autres directions : S3, E3 et O3)")
-                print("Pour murer une porte sur la case au sud (juste à proximité) : mS (pour les autres directions : mE,mN et mO)")
-                print("Pour percer une porte sur la case au sud (juste à proximité) : pS (pour les autres directions : pE,pN et pO)")
-                print("Si vous souhaitez abandonner : A")
-                print("A chaque choc contre un obstacle (mur, joueur, porte fermé, vous perdez un point de vie")
-            else :
-                if msg_a_envoyer=="fin" :
-                    ordreOk=True
+
+            if CoupsMutiples[1]<=int(0) :
+                print("Pas de coups multiples en stock")
+                msg_a_envoyer = input(nomJoueur + " [Robot " + str(numJoueur) + "] (Nombre de vies "+ str(nbVie) + "), at your command (? pour l'aide) : ")
+                if msg_a_envoyer=="?" :
+                    print("Vous pouvez vous déplacer au nord (N), au sud (S), à l'est (E) et à l'ouest (O)")
+                    print("Pour vous déplacer au nord sur une seule case : N ou N1 (pour les autres directions : S, E et O")
+                    print("Pour vous déplacer au nord sur 3 cases : N3 (pour les autres directions : S3, E3 et O3)")
+                    print("Pour murer une porte sur la case au sud (juste à proximité) : mS (pour les autres directions : mE,mN et mO)")
+                    print("Pour percer une porte sur la case au sud (juste à proximité) : pS (pour les autres directions : pE,pN et pO)")
+                    print("Si vous souhaitez abandonner : A")
+                    print("A chaque choc contre un obstacle (mur, joueur, porte fermé, vous perdez un point de vie")
                 else :
-                    if choixValide(msg_a_envoyer) :
+                    if msg_a_envoyer=="fin" :
                         ordreOk=True
                     else :
-                        print("Coup incorrect, consultez l'aide pour plus de précisions (? pour l'aide)")
+                        if choixValide(msg_a_envoyer) :
+                            ordreOk=True
+                            if len(msg_a_envoyer)>1 :
+                                # Coups multiple
+                                CoupsMutiples[0]=sensJoue(msg_a_envoyer)
+                                CoupsMutiples[1]=nbCoupsJoue(msg_a_envoyer)-1
+                                msg_a_envoyer=sensJoue(msg_a_envoyer)
+                        else :
+                            print("Coup incorrect, consultez l'aide pour plus de précisions (? pour l'aide)")
+            else :
+                print("Il y a des coups multiples en stock")
+                msg_a_envoyer=CoupsMutiples[0]
+                CoupsMutiples[1]=CoupsMutiples[1]-1
+                #print("=====>" +msg_a_envoyer)
+                ordreOk=True
 
+        print("Voici le message que je vais envoyer : " + msg_a_envoyer)
         msg_a_envoyer = msg_a_envoyer.encode()
         # Peut planter si vous tapez des caractères spéciaux
         try :

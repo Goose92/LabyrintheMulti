@@ -7,6 +7,7 @@ Présentation du jeu
     Le jeu est développé en python 3, d'où l'importance de le lancer via la commande Python3.
     Le but du jeu est d'être le premier à rejoindre la sortie du labyrinthe (représenté par un 'U').
     Le jeu étant en mode console (texte), on ne peut jouer qu'à 9 joueurs maximum (chacun étant représenté par un chiffre de 1 à 9)
+    Chaque joueur est positionné aléatoirement sur la carte au début du jeu et possède 10 points de vie.
 
 Ouverture du jeu sur de nouvelles fonctionnalités :
     Le jeu étant en objet, il est facile de rajouter la notion d'étage dans les labyrinthe. il faut simplement indiquer qu'un tablea est un tableau de tableau (l'étage étant l'indice).
@@ -14,7 +15,7 @@ Ouverture du jeu sur de nouvelles fonctionnalités :
     Actuellement, le jeu s'arrête à la fin de la partie (les clients et le serveur sont déconnectés). il serait possible de recommencer une partie en modifiant le menu principal.
 
 Lancement du serveur
-    Le lancement du serveur via une commande comme ci-dessous :
+    Le lancement du serveur via une commande comme ci-dessous (attention, utiliser la commande Python3 et non pas python):
         python3 serveur.py 2
     Dans cet exemple, le serveur est lancé en attendant 2 joueurs (clients)
     Il aurait été possible de faire à la demande du client (via une commande qu'un client pourrait envoyer.
@@ -27,12 +28,12 @@ Lancement du serveur
     Puis le serveur préparer la partie et attend la connexion de l'ensemble des joueurs.
 
 Lancement des clients
-    Chaque client se connecte en lancant la commande :
-        python client.py
+    Chaque client se connecte en lancant la commande : (attention, utiliser la commande Python3 et non pas python)
+        python3 client.py
     Le joueur se voit alors demandé son nom de joueur.
     Il faut ensuite se laisser guider par le serveur qui va alterner les séquences "passif" (on voit les autres jouer)
     et les séquences actif où l'on doit indiquer son coup à jouer.
-    chaque joueur se voit créditer de 100 points de vie. Il perd un point à chaque fois qu'il heurte un obstacle (mur, joueur, porte fermée)
+    chaque joueur se voit créditer de 10 points de vie. Il perd un point à chaque fois qu'il heurte un obstacle (mur, joueur, porte fermée)
     Lorsqu'il n'a plus de point de vie, il devient spectateur jusqu'à la fin du jeu.
     Sur les cartes, les éléments sont les suivants :
         O : un mur
@@ -44,6 +45,7 @@ Lancement des clients
     Les commandes de jeu sont les suivantes :
         Pour se déplacer d'une case vers le nord : N ou N1
         Pour se déplacer d'un x cases vers le nord : Nx (exemple : N4 pour 4 cases) ==> Après N, il faut donc une valeur numérique (sans espace)
+        A noter que pour les coups multiples (exemple S4, le joueur se déplacera d'une case, puis laissera les autres jouer, puis déplacement d'une nouvelle case dans la même direction, etc. jusqu'à atteindre le nb de coups souhaités.
         Vous avez la possibilité de faire de même avec le Sud (S), l'Ouest (O) et l'Est (E)
         A proximité direct d'une porte ouverte ('.'), vous pouvez la fermer/murer avec la commande mS (pour une porte qui se trouve au sud)
         A proximité direct d'une porte fermée ('-'), vous pouvez l'ouvrir/percer avec la commande pS (pour une porte qui se trouve au sud)
