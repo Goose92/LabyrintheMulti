@@ -70,7 +70,6 @@ while msg_a_envoyer != b"fin" and partieTerminee==False :
                 print("Il y a des coups multiples en stock " + str(CoupsMutiples[0]) + str(CoupsMutiples[1]) + " => déplacement automatique")
                 msg_a_envoyer=CoupsMutiples[0]
                 CoupsMutiples[1]=CoupsMutiples[1]-1
-                #print("=====>" +msg_a_envoyer)
                 ordreOk=True
 
         msg_a_envoyer = msg_a_envoyer.encode()
@@ -89,7 +88,6 @@ while msg_a_envoyer != b"fin" and partieTerminee==False :
         except :
             print("pb")
         message=msg_recu.decode()
-        #print("Message recu : " + message)
         if message=="[ACTIF]" :
             tour=True
             ordreRecu=True
@@ -114,7 +112,6 @@ while msg_a_envoyer != b"fin" and partieTerminee==False :
                                 print("Tout le monde est mort")
                             else :
                                 if message[:5]=="[VIE]" :
-                                    #numJoueur=message[5:]
                                     nbVie=int(message[5:])
                                     if nbVie>0 :
                                         print("Vous avez " + str(nbVie) +  " vies " )
