@@ -21,6 +21,7 @@ gestionVersionPython()
 print("****************************")
 print("Faire le menage dans fonction initilisee  = enlever celle que j'ai premarque par ASUPPR_")
 print("il faut verifier que la carte choisie a bien le nb de case vide corresondant avec le nb de joueurs attendus")
+print("supprimer fichier joueur.py")
 print("****************************")
 
 nbJoueurs=nbJoueursAttendu() # On regarde dans parametres le nombre de joueurs attendus, on sort si probleme

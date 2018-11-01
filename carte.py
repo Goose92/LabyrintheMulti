@@ -40,7 +40,6 @@ class Carte:
     def editerCarte(self) :
         laNouvelleCarte=Carte(self.nom,self.labyrinthe)
         finEdition=False
-        #carteAEditer=laNouvelleCarte.labyrinthe
         while finEdition==False :
             # On commence par afficher la carte
             i=1
@@ -60,7 +59,6 @@ class Carte:
                             nouvelleLigne=input("Saisie de la nouvelle ligne (" + str(len(laNouvelleCarte.labyrinthe[int(choix)-1])) + " caractère(s)) :")
                             if saisieLigneOK(len(laNouvelleCarte.labyrinthe[int(choix)-1]),nouvelleLigne) :
                                 # On enlève le dernier retour à la ligne inutile
-                                # nouvelleLigne=nouvelleLigne[0:int(len(nouvelleLigne))-1]
                                 laNouvelleCarte.labyrinthe[int(choix)-1]=nouvelleLigne
                                 finSaisieLigne=True
                     else :
