@@ -59,7 +59,7 @@ while msg_a_envoyer != b"fin" and partieTerminee==False :
                     else :
                         if choixValide(msg_a_envoyer) :
                             ordreOk=True
-                            if len(msg_a_envoyer)>1 :
+                            if len(msg_a_envoyer)>1 and msg_a_envoyer[0]!="m" and msg_a_envoyer[0]!="p" :
                                 # Coups multiple
                                 CoupsMutiples[0]=sensJoue(msg_a_envoyer)
                                 CoupsMutiples[1]=nbCoupsJoue(msg_a_envoyer)-1

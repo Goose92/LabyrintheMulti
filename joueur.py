@@ -14,8 +14,8 @@ class Joueur:
         self.nbCoups=0
         self.gagne=False
 
-    def retournerID(self) :
+    def SUPPRretournerID(self) :
         return self.ID
 
-    def mettreAJoueurNom(self,ID,nom) :
+    def SUPPRmettreAJoueurNom(self,ID,nom) :
         self.nom=nom

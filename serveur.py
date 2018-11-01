@@ -198,7 +198,7 @@ joueurActuel=randint(0,int(nbJoueurs)-1)
 lePlateau.partie.donnerLaMain(joueurActuel,clients_connectes)
 lePlateau.partie.messageAuxPassifs(joueurActuel,clients_connectes,"[MSG]" + "C'est a " + str(lePlateau.partie.nomJoueur(joueurActuel)) + " de jouer")
 
-lePlateau.partie.afficherPositionDesRobots()
+#lePlateau.partie.afficherPositionDesRobots()
 print(lePlateau.partie.carteAvecRobot())
 
 print("Debut de la partie\n")

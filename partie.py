@@ -342,7 +342,6 @@ class Partie:
                 ligneRobot=self.lesJoueurs[elt][3][0]
                 colonneRobot=self.lesJoueurs[elt][3][1]
 
-                #print("Le robot actuellement est en " + str(ligneRobot) + " / " + str(colonneRobot))
                 if sens=="N" :
                     # Test de la case cible pour voir si on peut y aller
                     if self.coupValide(ligneRobot-1,colonneRobot)==True and self.presenceRobot(ligneRobot-1,colonneRobot)==False :
@@ -430,7 +429,7 @@ class Partie:
         self.tailleGrille[0]=numLigne-1
         self.tailleGrille[1]=numColonne
 
-    def afficherPartie(self):
+    def SUPPRafficherPartie(self):
         for ligne in self.grille :
             print(ligne)
 
@@ -445,8 +444,7 @@ class Partie:
                     self.lesJoueurs[elt][3][0]=ligneInit
                     self.lesJoueurs[elt][3][1]=colonneInit
                     ok=True
-            #print("Position initiale trouvée : " + str(ligneInit) + " " + str(colonneInit))
 
-    def afficherPositionDesRobots(self) :
+    def SUPPRafficherPositionDesRobots(self) :
         for elt in self.lesJoueurs :
             print("Joueur " + str(self.lesJoueurs[elt][0]) + " en " + str(self.lesJoueurs[elt][3][0])+ "/" + str(self.lesJoueurs[elt][3][1]))
