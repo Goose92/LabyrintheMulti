@@ -3,7 +3,7 @@ import socket,select, sys,time
 
 from random import randint
 from joueur import Joueur
-from gestion import lancementServeur,nbJoueursAttendu,choixValide,nbCoupsJoue,sensJoue,saisieNombre,saisieLigneOK
+from gestion import lancementServeur,nbJoueursAttendu,choixValide,nbCoupsJoue,sensJoue,saisieNombre,saisieLigneOK,gestionVersionPython
 from carte import Carte
 from partie import Partie
 from plateau import Plateau
@@ -16,15 +16,9 @@ clients_a_lire = []
 nbCoups=1
 
 # Si la version Python utilisee est inferieure a 3, on sort (necessaire pour certaines fonctions)
-if (sys.version_info > (3, 0)):
-    print("")
-else:
-    print("Desole, il faut lancer le programme en python 3 avec la commande PYTHON3")
-    exit(0)
+gestionVersionPython()
 
 print("****************************")
-print("Il faut gerer les coups multiple en un par un (notion de buffer ?")
-print("Voir pour creer l'objet joueur pour regrouper plein de chose")
 print("Faire le menage dans fonction initilisee  = enlever celle que j'ai premarque par ASUPPR_")
 print("il faut verifier que la carte choisie a bien le nb de case vide corresondant avec le nb de joueurs attendus")
 print("****************************")

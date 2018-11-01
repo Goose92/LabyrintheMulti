@@ -118,3 +118,9 @@ def saisieNombre(question ) :
         except ValueError:
             print("Il faut saisir une valeur numerique entière")
 
+def gestionVersionPython() :
+    if (sys.version_info > (3, 0)):
+        print("")
+    else:
+        print("Desole, il faut lancer le programme en python 3 avec la commande PYTHON3")
+        exit(0)
