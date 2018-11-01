@@ -6,7 +6,7 @@ from gestion import flush_input,choixValide,sensJoue,nbCoupsJoue,gestionVersionP
 from constants import HOTE,PORT,NB_PTS_DE_VIE_INIT
 
 # Si la version Python utilisee est inferieure a 3, on sort (necessaire pour certaines fonctions)
-gestionVersionPython
+gestionVersionPython()
 
 nbVie=NB_PTS_DE_VIE_INIT
 

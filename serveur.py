@@ -194,7 +194,6 @@ lePlateau.partie.annoncerNumeroAuxJoueurs(clients_connectes)
 
 # On tire au sort celui qui commence
 joueurActuel=randint(0,int(nbJoueurs)-1)
-#print("C'est au joueur " + str(joueurActuel) + " de commencer")
 
 lePlateau.partie.donnerLaMain(joueurActuel,clients_connectes)
 lePlateau.partie.messageAuxPassifs(joueurActuel,clients_connectes,"[MSG]" + "C'est a " + str(lePlateau.partie.nomJoueur(joueurActuel)) + " de jouer")
@@ -215,7 +214,6 @@ while serveur_lance:
 
         # On parcourt la liste des clients a lire
         for client in clients_a_lire:
-            #print("Client actif numero : "+ str(joueurActuel))
             msg_recu = client.recv(1024)
             msg_recu = msg_recu.decode()
             clientID=client.getpeername()[1]
@@ -227,11 +225,9 @@ while serveur_lance:
                 lePlateau.partie.afficherListeJoueurs()
                 if lePlateau.partie.nbJoueurs()==0 :
                     serveur_lance=False
-                #client.send(b"Votre message a ete recu par le serveur")
             else :
                 if msg_recu != "" :
                     # On peut prendre en compte le coup
-                    #print("On peut jouer le coup - " + str(lePlateau.partie.nomJoueur(joueurActuel)) + " (" + str(clientID) + ") : " + str(msg_recu) )
                     retour=choixValide(msg_recu)
                     if retour == 1 :
                         nbCoups=nbCoupsJoue(msg_recu)
@@ -257,9 +253,6 @@ while serveur_lance:
                         print(str(lePlateau.partie.nomJoueur(joueurActuel)) + " vient d'abandonner")
                         lePlateau.partie.messageAuxPassifs(joueurActuel,clients_connectes,"[MSG]" + str(lePlateau.partie.nomJoueur(joueurActuel)) + " vient d'abandonner")
 
-
-
-                    #lePlateau.partie.afficherCartePartie()
                     lePlateau.partie.messageAuxPassifs(joueurActuel,clients_connectes,"[MSG]" + str(lePlateau.partie.nomJoueur(joueurActuel)) + " a joue")
                     lePlateau.partie.toutLeMondePassif(clients_connectes)
                     time.sleep(0.1)
@@ -282,9 +275,6 @@ while serveur_lance:
                             print("Tout le monde est mort")
                             serveur_lance=False
 
-
-
-            #print("Nombre de joueurs = " + str(lePlateau.partie.nbJoueurs()))
 
 print("fin du jeu")
 connexion_principale.close()
