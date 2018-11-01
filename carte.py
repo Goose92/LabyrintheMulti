@@ -74,7 +74,7 @@ class Carte:
             self.labyrinthe=laNouvelleCarte.labyrinthe
             self.enregistrerNouvelleCarte()
         else :
-            print("Erreur dans le format (il faut au moins un U et un seul X)")
+            print("Erreur dans le format (il faut au moins un U)")
         return True
 
     def carteValide(self) :

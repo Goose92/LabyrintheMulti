@@ -97,7 +97,7 @@ while sortieMenu==False :
                                                 print("On va creer une nouvelle de carte de " + str(largeurNouveau) + " de large et de " + str(hauteurNouveau) + " de haut")
                                                 controleNb=0
                                                 while controleNb != int(hauteurNouveau) :
-                                                    nouvelleLigne=input("Entrez une ligne de la carte (avec espace, -, . et 0 en caracteres) d'une longueur de " + str(largeurNouveau) + " caractere(s)")
+                                                    nouvelleLigne=input("Entrez une ligne de la carte (avec espace, -, . et O en caracteres) d'une longueur de " + str(largeurNouveau) + " caractere(s)")
                                                     if saisieLigneOK(largeurNouveau,nouvelleLigne) == True :
                                                         controleNb=controleNb+1
                                                         nouvelleCarte=nouvelleCarte + nouvelleLigne + "\n"
