@@ -10,7 +10,7 @@ def lancementServeur(hote,port) :
     connexion_principale = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     connexion_principale.bind((hote, port))
     connexion_principale.listen(5)
-    print("Le serveur Labyrinthe est lancée sur le port {}\n".format(port))
+    #print("Le serveur Labyrinthe est lancée sur le port {}\n".format(port))
     return connexion_principale
 
 def nbJoueursAttendu() :

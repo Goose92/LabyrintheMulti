@@ -46,6 +46,7 @@ while msg_a_envoyer != b"fin" and partieTerminee==False :
             if CoupsMutiples[1]<=int(0) :
                 msg_a_envoyer = input(nomJoueur + " [Robot " + str(numJoueur) + "] (Nombre de vies "+ str(nbVie) + "), at your command (? pour l'aide) : ")
                 if msg_a_envoyer=="?" :
+                    print("Votre objectif est de rejoindre une sortie (case U) avant les autres")
                     print("Vous pouvez vous déplacer au nord (N), au sud (S), à l'est (E) et à l'ouest (O)")
                     print("Pour vous déplacer au nord sur une seule case : N ou N1 (pour les autres directions : S, E et O")
                     print("Pour vous déplacer au nord sur 3 cases : N3 (pour les autres directions : S3, E3 et O3)")
@@ -53,6 +54,8 @@ while msg_a_envoyer != b"fin" and partieTerminee==False :
                     print("Pour percer une porte sur la case au sud (juste à proximité) : pS (pour les autres directions : pE,pN et pO)")
                     print("Si vous souhaitez abandonner : A")
                     print("A chaque choc contre un obstacle (mur, joueur, porte fermé, vous perdez un point de vie")
+                    print("Vous perdez la partie si vous n'avez plus de point de vie ou si un joueur rejoint la sortie avant vous")
+                    print("\n")
                 else :
                     if msg_a_envoyer=="fin" :
                         ordreOk=True

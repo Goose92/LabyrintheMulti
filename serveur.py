@@ -2,7 +2,6 @@
 import socket,select, sys,time
 
 from random import randint
-from joueur import Joueur
 from gestion import lancementServeur,nbJoueursAttendu,choixValide,nbCoupsJoue,sensJoue,saisieNombre,saisieLigneOK,gestionVersionPython
 from carte import Carte
 from partie import Partie
@@ -21,7 +20,8 @@ gestionVersionPython()
 print("****************************")
 print("Faire le menage dans fonction initilisee  = enlever celle que j'ai premarque par ASUPPR_")
 print("il faut verifier que la carte choisie a bien le nb de case vide corresondant avec le nb de joueurs attendus")
-print("supprimer fichier joueur.py")
+print("Il semble qu'il y ait un pb dans la suite des caffichafge (a jouer, doit jouer) chez les joueurs")
+print("J'(ai l'impfression que c'est quand c'est au premier joueur (0) de jouer, ca n'affiche pas")
 print("****************************")
 
 nbJoueurs=nbJoueursAttendu() # On regarde dans parametres le nombre de joueurs attendus, on sort si probleme
@@ -166,8 +166,7 @@ while carteOk==False :
         print("La carte que vous avez choisi n'a pas assez de places libres pour accueillir les joueurs attendus")
 
 lePlateau.partie.initialiserTailleMaxGrille()
-print("Taille de la grille : " + str(lePlateau.partie.tailleGrille[0]) + " par " +  str(lePlateau.partie.tailleGrille[1]))
-print("Plateau cree, en attente de connexions de " + str(nbJoueurs) + " joueurs\n")
+print("Plateau creee, en attente de connexions de " + str(nbJoueurs) + " joueurs\n")
 
 connexion_principale=lancementServeur(HOTE,PORT)   # Lancement du serveur
 
@@ -179,31 +178,27 @@ lePlateau.presentationDesJoueurs(nbJoueurs,clients_connectes)
 lePlateau.partie.toutLeMondePassif(clients_connectes)
 
 lePlateau.partie.initialisationPositionJoueurs()
-print("La position des joueurs a ete initialisee")
 
-lePlateau.partie.afficherCarteATous(clients_connectes,nbCoups)
 lePlateau.partie.initialiserToursjoueurs()
 
-lePlateau.partie.afficherListeJoueurs()
-print("la liste des tours de joueurs a ete initialisee")
+print("Le tirage au sort a eu lieu pour l'ordre")
 lePlateau.partie.messageAuxPassifs(-1,clients_connectes,"[MSG]" + "Tous les joueurs sont arrives")
+
+lePlateau.partie.afficherCarteATous(clients_connectes,nbCoups)
 
 lePlateau.partie.annoncerNumeroAuxJoueurs(clients_connectes)
 
 # Le serveur se met en dialogue avec les clients connectes
 
-
 # On tire au sort celui qui commence
 joueurActuel=randint(0,int(nbJoueurs)-1)
 
+print("\nDebut de la partie\n")
+lePlateau.partie.toutLeMondePassif(clients_connectes)
+lePlateau.partie.messageATous(clients_connectes,"[MSG]" + "C'est a " + str(lePlateau.partie.nomJoueur(joueurActuel)) + " de jouer")
 lePlateau.partie.donnerLaMain(joueurActuel,clients_connectes)
-lePlateau.partie.messageAuxPassifs(joueurActuel,clients_connectes,"[MSG]" + "C'est a " + str(lePlateau.partie.nomJoueur(joueurActuel)) + " de jouer")
 
-#lePlateau.partie.afficherPositionDesRobots()
 print(lePlateau.partie.carteAvecRobot())
-
-print("Debut de la partie\n")
-
 
 while serveur_lance:
     clients_a_lire = []
@@ -219,62 +214,61 @@ while serveur_lance:
             msg_recu = msg_recu.decode()
             clientID=client.getpeername()[1]
 
-            if msg_recu == "fin":
-                lePlateau.partie.supprimerUnJoueur(int(clientID))
-                client.close()
-                clients_connectes.remove(client)
-                lePlateau.partie.afficherListeJoueurs()
-                if lePlateau.partie.nbJoueurs()==0 :
-                    serveur_lance=False
-            else :
-                if msg_recu != "" :
-                    # On peut prendre en compte le coup
-                    retour=choixValide(msg_recu)
-                    if retour == 1 :
-                        nbCoups=nbCoupsJoue(msg_recu)
-                        sens=sensJoue(msg_recu)
-                        for i in range(0,int(nbCoups)) :
-                            lePlateau.partie.jouerUnCoup(clientID,sens)
-                        lePlateau.partie.messageNbVies(joueurActuel,clients_connectes)
-                        print(str(lePlateau.partie.nomJoueur(joueurActuel)) + " a joue " + str(msg_recu) + " (il lui reste " + str(lePlateau.partie.nbPtsJoueur(joueurActuel)) + " points)")
-
-                    if retour == 2 :
-                        lePlateau.partie.creerMur(clientID,msg_recu[1])
-                        nbCoups=0
-                        print(str(lePlateau.partie.nomJoueur(joueurActuel)) + " a joue " + str(msg_recu) + " (il lui reste " + str(lePlateau.partie.nbPtsJoueur(joueurActuel)) + " points)")
-
-                    if retour == 3 :
-                        lePlateau.partie.supprimerMur(clientID,msg_recu[1])
-                        nbCoups=0
-                        print(str(lePlateau.partie.nomJoueur(joueurActuel)) + " a joue " + str(msg_recu) + " (il lui reste " + str(lePlateau.partie.nbPtsJoueur(joueurActuel)) + " points)")
-
-                    if retour == 4 : # Abandon du joueur
-                        lePlateau.partie.tuerJoueur(joueurActuel)
-                        lePlateau.partie.messageNbVies(joueurActuel,clients_connectes)
-                        print(str(lePlateau.partie.nomJoueur(joueurActuel)) + " vient d'abandonner")
-                        lePlateau.partie.messageAuxPassifs(joueurActuel,clients_connectes,"[MSG]" + str(lePlateau.partie.nomJoueur(joueurActuel)) + " vient d'abandonner")
+            if msg_recu != "" :
+                # On peut prendre en compte le coup
+                retour=choixValide(msg_recu)
+                if retour == 1 : # Déplacement classique
+                    nbCoups=nbCoupsJoue(msg_recu)
+                    sens=sensJoue(msg_recu)
+                    for i in range(0,int(nbCoups)) :
+                        lePlateau.partie.jouerUnCoup(clientID,sens)
+                    lePlateau.partie.messageNbVies(joueurActuel,clients_connectes)
+                    print(str(lePlateau.partie.nomJoueur(joueurActuel)) + " a joue " + str(msg_recu) + " (il lui reste " + str(lePlateau.partie.nbPtsJoueur(joueurActuel)) + " points)")
 
                     lePlateau.partie.messageAuxPassifs(joueurActuel,clients_connectes,"[MSG]" + str(lePlateau.partie.nomJoueur(joueurActuel)) + " a joue")
-                    lePlateau.partie.toutLeMondePassif(clients_connectes)
-                    time.sleep(0.1)
+                    #lePlateau.partie.toutLeMondePassif(clients_connectes)
 
-                    lePlateau.partie.afficherCarteATous(clients_connectes,nbCoups)
-                    if lePlateau.joueurGagne(clientID) == True :
+                if retour == 2 : # Fermeture d'une porte
+                    lePlateau.partie.creerMur(clientID,msg_recu[1])
+                    nbCoups=0
+                    print(str(lePlateau.partie.nomJoueur(joueurActuel)) + " a joue " + str(msg_recu) + " (il lui reste " + str(lePlateau.partie.nbPtsJoueur(joueurActuel)) + " points)")
+                    lePlateau.partie.messageAuxPassifs(joueurActuel,clients_connectes,"[MSG]" + str(lePlateau.partie.nomJoueur(joueurActuel)) + " a joue")
+                    #lePlateau.partie.toutLeMondePassif(clients_connectes)
+
+                if retour == 3 : # Ouverture d'une porte
+                    lePlateau.partie.supprimerMur(clientID,msg_recu[1])
+                    nbCoups=0
+                    print(str(lePlateau.partie.nomJoueur(joueurActuel)) + " a joue " + str(msg_recu) + " (il lui reste " + str(lePlateau.partie.nbPtsJoueur(joueurActuel)) + " points)")
+                    lePlateau.partie.messageAuxPassifs(joueurActuel,clients_connectes,"[MSG]" + str(lePlateau.partie.nomJoueur(joueurActuel)) + " a joue")
+                    #lePlateau.partie.toutLeMondePassif(clients_connectes)
+
+                if retour == 4 : # Abandon du joueur
+                    lePlateau.partie.tuerJoueur(joueurActuel)
+                    lePlateau.partie.messageNbVies(joueurActuel,clients_connectes)
+                    print(str(lePlateau.partie.nomJoueur(joueurActuel)) + " vient d'abandonner")
+                    lePlateau.partie.toutLeMondePassif(clients_connectes)
+                    lePlateau.partie.messageAuxPassifs(joueurActuel,clients_connectes,"[MSG]" + str(lePlateau.partie.nomJoueur(joueurActuel)) + " vient d'abandonner")
+
+
+                lePlateau.partie.afficherCarteATous(clients_connectes,nbCoups)
+                if lePlateau.joueurGagne(clientID) == True :
+                    lePlateau.partie.toutLeMondePassif(clients_connectes)
+                    lePlateau.partie.messageATous(clients_connectes,"[GAGNE]" + "Victoire du joueur " + lePlateau.partie.nomJoueur(joueurActuel))
+                    print(lePlateau.partie.carteAvecRobot())
+                    print("Victoire du joueur " + lePlateau.partie.nomJoueur(joueurActuel))
+                    serveur_lance = False
+                else :
+                    joueurActuel=lePlateau.partie.joueurSuivant(joueurActuel,int(nbJoueurs))
+                    if joueurActuel!=-1 :
                         lePlateau.partie.toutLeMondePassif(clients_connectes)
-                        lePlateau.partie.messageATous(clients_connectes,"[GAGNE]" + "Victoire du joueur " + lePlateau.partie.nomJoueur(joueurActuel))
+                        lePlateau.partie.messageATous(clients_connectes,"[MSG]" + "C'est a " + str(lePlateau.partie.nomJoueur(joueurActuel)) + " de jouer")
+
+                        lePlateau.partie.donnerLaMain(joueurActuel,clients_connectes)
                         print(lePlateau.partie.carteAvecRobot())
-                        print("Victoire du joueur " + lePlateau.partie.nomJoueur(joueurActuel))
-                        serveur_lance = False
-                    else :
-                        joueurActuel=lePlateau.partie.joueurSuivant(joueurActuel,int(nbJoueurs))
-                        if joueurActuel!=-1 :
-                            lePlateau.partie.donnerLaMain(joueurActuel,clients_connectes)
-                            lePlateau.partie.messageAuxPassifs(joueurActuel,clients_connectes,"[MSG]" + "C'est a " + lePlateau.partie.nomJoueur(joueurActuel) + " de jouer")
-                            print(lePlateau.partie.carteAvecRobot())
-                        else : # Tout le monde est mort
-                            lePlateau.partie.messageAuxPassifs(joueurActuel,clients_connectes,"[FIN]")
-                            print("Tout le monde est mort")
-                            serveur_lance=False
+                    else : # Tout le monde est mort
+                        lePlateau.partie.messageAuxPassifs(joueurActuel,clients_connectes,"[FIN]")
+                        print("Tout le monde est mort")
+                        serveur_lance=False
 
 
 print("fin du jeu")

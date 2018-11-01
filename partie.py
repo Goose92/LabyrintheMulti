@@ -434,7 +434,6 @@ class Partie:
             print(ligne)
 
     def initialisationPositionJoueurs(self) :
-        print("On initialise les positions")
         for elt in self.lesJoueurs :
             ok=False
             while ok==False:

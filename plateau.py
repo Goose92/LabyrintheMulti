@@ -76,7 +76,7 @@ class Plateau:
         choixUtilisateurValide=False
 
         while choixUtilisateurValide==False :
-            choixCarte=saisieNombre("Avec quel carte souhaitez vous jouer ? ( 0 pour quitter)")
+            choixCarte=saisieNombre("Avec quel carte souhaitez vous jouer ? ( 0 pour quitter) ")
 
             if choixCarte >0 and choixCarte<=self.nombreDeCartes() :
                 print("Vous souhaitez jouer avec la carte " + self.cartes[choixCarte-1].nom)
@@ -178,5 +178,4 @@ class Plateau:
                 self.partie.ajouterUnJoueur(str(infos_connexion[1]),"vide",connexion_avec_client,str(nbJoueursConnectes+1),NbPtsDeVieInit)
                 nbJoueursConnectes=nbJoueursConnectes+1
                 print(str(nbJoueursConnectes) + " joueur(s) connecté(s) sur les " + str(nbJoueurs) + " attendu(s)")
-        print("Les joueurs sont tous là !")
         return clients_connectes
