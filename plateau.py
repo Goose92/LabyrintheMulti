@@ -92,11 +92,6 @@ class Plateau:
                     print("Le numéro ne correspond pas à un numéro de carte existant")
         return True
 
-    def SUPRafficherCartes(self) :
-        for elt in self.cartes :
-            elt.afficherCarte()
-
-
     def listerCartes(self) :
         print("Voici la liste des cartes : ")
         for i, carte in enumerate(self.cartes):

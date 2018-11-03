@@ -17,13 +17,6 @@ nbCoups=1
 # Si la version Python utilisee est inferieure a 3, on sort (necessaire pour certaines fonctions)
 gestionVersionPython()
 
-print("****************************")
-print("Faire le menage dans fonction initilisee  = enlever celle que j'ai premarque par ASUPPR_")
-print("il faut verifier que la carte choisie a bien le nb de case vide corresondant avec le nb de joueurs attendus")
-print("Il semble qu'il y ait un pb dans la suite des caffichafge (a jouer, doit jouer) chez les joueurs")
-print("J'(ai l'impfression que c'est quand c'est au premier joueur (0) de jouer, ca n'affiche pas")
-print("****************************")
-
 nbJoueurs=nbJoueursAttendu() # On regarde dans parametres le nombre de joueurs attendus, on sort si probleme
 # Creation du plateau de jeu
 lePlateau=Plateau([],Partie(""))
@@ -184,8 +177,6 @@ lePlateau.partie.initialiserToursjoueurs()
 print("Le tirage au sort a eu lieu pour l'ordre")
 lePlateau.partie.messageAuxPassifs(-1,clients_connectes,"[MSG]" + "Tous les joueurs sont arrives")
 
-lePlateau.partie.afficherCarteATous(clients_connectes,nbCoups)
-
 lePlateau.partie.annoncerNumeroAuxJoueurs(clients_connectes)
 
 # Le serveur se met en dialogue avec les clients connectes
@@ -196,6 +187,8 @@ joueurActuel=randint(0,int(nbJoueurs)-1)
 print("\nDebut de la partie\n")
 lePlateau.partie.toutLeMondePassif(clients_connectes)
 lePlateau.partie.messageATous(clients_connectes,"[MSG]" + "C'est a " + str(lePlateau.partie.nomJoueur(joueurActuel)) + " de jouer")
+lePlateau.partie.afficherCarteATous(clients_connectes,nbCoups)
+
 lePlateau.partie.donnerLaMain(joueurActuel,clients_connectes)
 
 print(lePlateau.partie.carteAvecRobot())

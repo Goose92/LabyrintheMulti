@@ -239,9 +239,6 @@ class Partie:
         laCarte=laCarte[0:int(len(laCarte))-1]
         return laCarte
 
-    def A_SUPPR_nbJoueurs(self):
-        return len(self.lesJoueurs)
-
     def mettreAJourNomJoueur(self,ID,nom) :
         ancienJoueur=self.lesJoueurs[ID]
         ancienJoueur[0]=nom
@@ -389,38 +386,6 @@ class Partie:
         else :
             return False
 
-    def ASUPPR_chargerSauvegarde(self) :
-        chemin = os.path.join("sauvegardes", "sauvegardes.txt")
-        if os.path.exists(chemin) == True :
-            nouveauFichier=open(chemin, "r")
-            svgLu=nouveauFichier.read()
-            nouveauFichier.close()
-            self.grille=svgLu.split("\n")
-
-            chemin = os.path.join("sauvegardes", "joueur.txt")
-            if os.path.exists(chemin) == True :
-               nouveauFichier=open(chemin, "r")
-               joueur=nouveauFichier.read()
-               nouveauFichier.close()
-               self.pointDeVie=int(joueur)
-            else :
-                self.pointDeVie=100
-            return True
-        else :
-           return False
-
-    def ASUPPR_initialiserPositionRobot(self) :
-        numLigne=0
-        for ligne in self.grille :
-            for numColonne in range(0,int(len(ligne))) :
-                if ligne[numColonne]=="X" :
-                    self.robot[0]=numLigne
-                    self.robot[1]=numColonne
-            if ligne[numColonne]=="x" :
-                self.robot[0]=numLigne
-                self.robot[1]=numColonne
-            numLigne=numLigne+1
-
     def initialiserTailleMaxGrille(self) :
         numLigne=0
         for ligne in self.grille :
@@ -428,10 +393,6 @@ class Partie:
             numLigne=numLigne+1
         self.tailleGrille[0]=numLigne-1
         self.tailleGrille[1]=numColonne
-
-    def SUPPRafficherPartie(self):
-        for ligne in self.grille :
-            print(ligne)
 
     def initialisationPositionJoueurs(self) :
         for elt in self.lesJoueurs :
@@ -443,7 +404,3 @@ class Partie:
                     self.lesJoueurs[elt][3][0]=ligneInit
                     self.lesJoueurs[elt][3][1]=colonneInit
                     ok=True
-
-    def SUPPRafficherPositionDesRobots(self) :
-        for elt in self.lesJoueurs :
-            print("Joueur " + str(self.lesJoueurs[elt][0]) + " en " + str(self.lesJoueurs[elt][3][0])+ "/" + str(self.lesJoueurs[elt][3][1]))
